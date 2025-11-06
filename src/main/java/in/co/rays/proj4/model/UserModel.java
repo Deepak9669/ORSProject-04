@@ -43,18 +43,25 @@ public class UserModel {
 		return pk + 1;
 
 	}
-	public long add(UserBean bean) throws ApplicationException {
-		
-		Connection conn=null;
-		int pk=0;
-		
+
+	public long add(UserBean bean) throws ApplicationException, DuplicateRecordException {
+
+		Connection conn = null;
+		int pk = 0;
+
+		UserBean existBean = findByLogin(bean.getLogin());
+
+		if (existBean != null) {
+			throw new DuplicateRecordException("Role allready exists");
+		}
+
 		try {
-			
-			pk=nextPk();
-			conn=JDBCDataSource.getConnection();
+
+			pk = nextPk();
+			conn = JDBCDataSource.getConnection();
 			conn.setAutoCommit(false);
-			PreparedStatement pstmt=conn.prepareStatement("insert into st_user values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			
+			PreparedStatement pstmt = conn.prepareStatement("insert into st_user values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
 			pstmt.setInt(1, pk);
 			pstmt.setString(2, bean.getFirstName());
 			pstmt.setString(3, bean.getLastName());
@@ -68,31 +75,29 @@ public class UserModel {
 			pstmt.setString(11, bean.getModifiedBy());
 			pstmt.setTimestamp(12, bean.getCreatedDatetime());
 			pstmt.setTimestamp(13, bean.getModifiedDatetime());
-			
+
 			pstmt.executeUpdate();
-			
+
 			conn.commit();
 			pstmt.close();
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 			try {
 				conn.rollback();
-				
+
 			} catch (Exception ex) {
 				throw new ApplicationException("Exception : add rollback exception " + ex.getMessage());
 			}
 			throw new ApplicationException("Exception : Exception in add User");
-			
+
 		} finally {
 			JDBCDataSource.closeConnection(conn);
 		}
 		return pk;
-		
+
 	}
-	
 
 	public void delete(UserBean bean) throws ApplicationException {
 
@@ -117,11 +122,16 @@ public class UserModel {
 			JDBCDataSource.closeConnection(conn);
 		}
 	}
+
 	public void update(UserBean bean) throws DuplicateRecordException, ApplicationException {
 
 		Connection conn = null;
-
 		
+		UserBean existBean=findByLogin(bean.getLogin());
+		
+		if(existBean != null && existBean.getId()!= bean.getId()) {
+			throw new DuplicateRecordException("Role already exists");
+		}
 
 		try {
 			conn = JDBCDataSource.getConnection();
@@ -156,6 +166,7 @@ public class UserModel {
 			JDBCDataSource.closeConnection(conn);
 		}
 	}
+
 	public UserBean findByPk(long pk) throws ApplicationException {
 
 		UserBean bean = null;
@@ -194,6 +205,7 @@ public class UserModel {
 		}
 		return bean;
 	}
+
 	public UserBean findByLogin(String login) throws ApplicationException {
 
 		StringBuffer sql = new StringBuffer("select * from st_user where login = ?");
@@ -232,6 +244,7 @@ public class UserModel {
 		}
 		return bean;
 	}
+
 	public UserBean authenticate(String login, String password) throws ApplicationException {
 
 		UserBean bean = null;
@@ -270,6 +283,10 @@ public class UserModel {
 		}
 		return bean;
 	}
+	public List<UserBean> list() throws ApplicationException{
+		return search(null, 0, 0);
+	}
+
 	public List<UserBean> search(UserBean bean, int pageNo, int pageSize) throws ApplicationException {
 
 		Connection conn = null;
@@ -343,6 +360,4 @@ public class UserModel {
 		return list;
 	}
 
-
-	
 }

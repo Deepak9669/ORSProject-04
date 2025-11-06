@@ -57,7 +57,7 @@ public class TestUserModel {
 			model.add(bean);
 
 			System.out.println("user added sucessfully");
-		} catch (ApplicationException e) {
+		} catch (ApplicationException | DuplicateRecordException e) {
 
 			e.printStackTrace();
 		}
@@ -172,6 +172,7 @@ public class TestUserModel {
 		}
 
 	}
+
 	public static void testAuthenticate() {
 
 		UserModel model = new UserModel();
@@ -202,27 +203,25 @@ public class TestUserModel {
 
 	}
 
-
-public static void testSearch() {
-		UserModel model=new UserModel();
-	try {
-		UserBean bean = new UserBean();
-		List list = new ArrayList();
-		bean.setFirstName("dev");
-		list = model.search(bean, 0 ,0);
-		if (list.size() < 0) {
-			System.out.println("Test Serach fail");
+	public static void testSearch() {
+		UserModel model = new UserModel();
+		try {
+			UserBean bean = new UserBean();
+			List list = new ArrayList();
+			bean.setFirstName("dev");
+			list = model.search(bean, 0, 0);
+			if (list.size() < 0) {
+				System.out.println("Test Serach fail");
+			}
+			Iterator it = list.iterator();
+			while (it.hasNext()) {
+				bean = (UserBean) it.next();
+				System.out.println(bean.getId());
+				System.out.println(bean.getFirstName());
+				System.out.println(bean.getLastName());
+			}
+		} catch (ApplicationException e) {
+			e.printStackTrace();
 		}
-		Iterator it = list.iterator();
-		while (it.hasNext()) {
-			bean = (UserBean) it.next();
-			System.out.println(bean.getId());
-			System.out.println(bean.getFirstName());
-			System.out.println(bean.getLastName());
-		}
-	} catch (ApplicationException e) {
-		e.printStackTrace();
 	}
 }
-}
-

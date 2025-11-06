@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import com.google.protobuf.TextFormat.ParseException;
 
@@ -16,7 +17,7 @@ import in.co.rays.proj4.model.RoleModel;
 public class TestRoleModel {
 
 	public static void main(String[] args) throws DatabaseException, ParseException, ApplicationException {
-	testAdd();
+//	testAdd();
 //		testDelete();
 //		testUpdate();
 //		testFindByPk();
@@ -138,10 +139,10 @@ public class TestRoleModel {
 		try {
 			RoleModel model=new RoleModel();
 			RoleBean bean = new RoleBean();
-			ArrayList<RoleBean> list= new ArrayList<RoleBean>();
+			List list= new ArrayList();
 			bean.setName("student");
-			list = (ArrayList<RoleBean>) model.search(bean, 0, 0);
-			if (list.size() < 0) {
+			list =  model.search(bean, 0, 0);
+			if (list.size() <0) {
 				System.out.println("Test Serach fail");
 			}
 			Iterator it = list.iterator();

@@ -99,7 +99,7 @@ public class RoleModel {
 		try {
 			conn = JDBCDataSource.getConnection();
 			conn.setAutoCommit(false);
-			PreparedStatement pstmt = conn.prepareStatement("delete from st_role where id=?)");
+			PreparedStatement pstmt = conn.prepareStatement("delete from st_role where id=?");
 
 			pstmt.setLong(1, bean.getId());
 			pstmt.executeUpdate();
@@ -126,9 +126,9 @@ public class RoleModel {
 
 		Connection conn = null;
 		
-		RoleBean duplicateRole = findByName(bean.getName());
+		RoleBean existBean = findByName(bean.getName());
 
-		if (duplicateRole != null && duplicateRole.getId() != bean.getId()) {
+		if (existBean != null && existBean.getId() != bean.getId()) {
 			throw new DuplicateRecordException("Role already exists");
 		}
 

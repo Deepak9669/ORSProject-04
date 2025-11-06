@@ -103,8 +103,8 @@ public class TestStudentModel {
 			e.printStackTrace();
 		}
 
-
 	}
+
 	public static void testFindByPk() {
 
 		StudentModel model = new StudentModel();
@@ -130,7 +130,8 @@ public class TestStudentModel {
 		}
 
 	}
-	public static void testFindByEmail()  {
+
+	public static void testFindByEmail() {
 
 		StudentModel model = new StudentModel();
 
@@ -155,39 +156,36 @@ public class TestStudentModel {
 		}
 
 	}
-	
 
-public static void testSearch() {
-	
-	try {
-		StudentModel model=new StudentModel();
-		StudentBean bean = new StudentBean();
-		List list= new ArrayList();
-		bean.setFirstName("deepak");
-		list =  model.search(bean, 0, 0);
-		if (list.size() <0) {
-			System.out.println("Test Serach fail");
-		}
-		Iterator it = list.iterator();
-		while (it.hasNext()) {
-			bean = (StudentBean) it.next();
-			System.out.println(bean.getId());
-			System.out.println(bean.getFirstName());
-			System.out.println(bean.getLastName());
-			System.out.println(bean.getDob());
-			System.out.println(bean.getGender());
-			System.out.println(bean.getMobileNo());
-			System.out.println(bean.getEmail());
-			System.out.println(bean.getCreatedBy());
-			System.out.println(bean.getModifiedBy());
-			System.out.println(bean.getCreatedDatetime());
-			System.out.println(bean.getModifiedDatetime());
+	public static void testSearch() {
 
+		try {
+			StudentModel model = new StudentModel();
+			StudentBean bean = new StudentBean();
+			List list = new ArrayList();
+			bean.setFirstName("deepak");
+			list = model.search(bean, 0, 0);
+			if (list.size() < 0) {
+				System.out.println("Test Serach fail");
+			}
+			Iterator it = list.iterator();
+			while (it.hasNext()) {
+				bean = (StudentBean) it.next();
+				System.out.println(bean.getId());
+				System.out.println(bean.getFirstName());
+				System.out.println(bean.getLastName());
+				System.out.println(bean.getDob());
+				System.out.println(bean.getGender());
+				System.out.println(bean.getMobileNo());
+				System.out.println(bean.getEmail());
+				System.out.println(bean.getCreatedBy());
+				System.out.println(bean.getModifiedBy());
+				System.out.println(bean.getCreatedDatetime());
+				System.out.println(bean.getModifiedDatetime());
+
+			}
+		} catch (ApplicationException e) {
+			e.printStackTrace();
 		}
-	} catch (ApplicationException e) {
-		e.printStackTrace();
 	}
 }
-}
-
-

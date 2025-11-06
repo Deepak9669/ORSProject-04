@@ -1,4 +1,4 @@
-package in.co.rays.proj4.model;
+package in.co.rays.proj4.test;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import in.co.rays.proj4.bean.CourseBean;
 import in.co.rays.proj4.bean.StudentBean;
 import in.co.rays.proj4.exception.ApplicationException;
 import in.co.rays.proj4.exception.DatabaseException;
+import in.co.rays.proj4.model.CourseModel;
 
 public class TestCourseModel {
 

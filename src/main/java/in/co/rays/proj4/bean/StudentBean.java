@@ -2,7 +2,7 @@ package in.co.rays.proj4.bean;
 
 import java.util.Date;
 
-public class StudentBean {
+public class StudentBean extends BaseBean {
 	
 	private String firstName;
 	private String lastName;
@@ -10,7 +10,7 @@ public class StudentBean {
 	private String gender;
 	private String mobileNo;
 	private String email;
-	private String collegeId;
+	private long collegeId;
 	private String collegeName;
 	public String getFirstName() {
 		return firstName;
@@ -48,10 +48,10 @@ public class StudentBean {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getCollegeId() {
+	public long getCollegeId() {
 		return collegeId;
 	}
-	public void setCollegeId(String collegeId) {
+	public void setCollegeId(long collegeId) {
 		this.collegeId = collegeId;
 	}
 	public String getCollegeName() {

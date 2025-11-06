@@ -20,12 +20,12 @@ public class TestCollegeModel {
 
 	public static void main(String[] args) throws DatabaseException {
 
-//		testAdd();
+		testAdd();
 //		testUpdate();
 //		testDelete();
 //		testFindByPk();
 //		testFindByName();
-		testSearch();
+//		testSearch();
 
 //		CollegeModel model = new CollegeModel();
 //
@@ -37,7 +37,7 @@ public class TestCollegeModel {
 		CollegeModel model = new CollegeModel();
 		CollegeBean bean = new CollegeBean();
 
-		bean.setName("Devil");
+		bean.setName("IPS");
 		bean.setAddress("M.Y");
 		bean.setState("MP");
 		bean.setCity("Indore");

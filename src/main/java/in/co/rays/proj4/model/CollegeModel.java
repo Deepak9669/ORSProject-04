@@ -245,34 +245,41 @@ public class CollegeModel {
 
 	public List<CollegeBean> search(CollegeBean bean, int pageNo, int pageSize) throws ApplicationException {
 
-		Connection conn = null;
-
-		ArrayList<CollegeBean> list = new ArrayList<CollegeBean>();
-
-		StringBuffer sql = new StringBuffer("select * from st_college where 1=1");
+		StringBuffer sql = new StringBuffer("select * from st_college where 1 = 1");
 
 		if (bean != null) {
 			if (bean.getId() > 0) {
 				sql.append(" and id = " + bean.getId());
-
 			}
 			if (bean.getName() != null && bean.getName().length() > 0) {
 				sql.append(" and name like '" + bean.getName() + "%'");
-
 			}
-
+			if (bean.getAddress() != null && bean.getAddress().length() > 0) {
+				sql.append(" and address like '" + bean.getAddress() + "%'");
+			}
+			if (bean.getState() != null && bean.getState().length() > 0) {
+				sql.append(" and state like '" + bean.getState() + "%'");
+			}
+			if (bean.getCity() != null && bean.getCity().length() > 0) {
+				sql.append(" and city like '" + bean.getCity() + "%'");
+			}
+			if (bean.getPhoneNo() != null && bean.getPhoneNo().length() > 0) {
+				sql.append(" and phone_no = " + bean.getPhoneNo());
+			}
 		}
+
 		if (pageSize > 0) {
 			pageNo = (pageNo - 1) * pageSize;
-			sql.append(" limit " + pageNo + " ," + pageSize);
+			sql.append(" limit " + pageNo + ", " + pageSize);
 		}
+
+		ArrayList<CollegeBean> list = new ArrayList<CollegeBean>();
+		Connection conn = null;
 
 		try {
 			conn = JDBCDataSource.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
-
 			ResultSet rs = pstmt.executeQuery();
-
 			while (rs.next()) {
 				bean = new CollegeBean();
 				bean.setId(rs.getLong(1));
@@ -285,19 +292,15 @@ public class CollegeModel {
 				bean.setModifiedBy(rs.getString(8));
 				bean.setCreatedDatetime(rs.getTimestamp(9));
 				bean.setModifiedDatetime(rs.getTimestamp(10));
+				list.add(bean);
 			}
 			rs.close();
 			pstmt.close();
-
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new ApplicationException("Exception : Exception in getting College by Name");
-
+			throw new ApplicationException("Exception : Exception in search college");
 		} finally {
 			JDBCDataSource.closeConnection(conn);
 		}
-
 		return list;
-
 	}
 }

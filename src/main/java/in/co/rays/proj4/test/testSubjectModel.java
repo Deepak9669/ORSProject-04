@@ -3,7 +3,10 @@ package in.co.rays.proj4.test;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import in.co.rays.proj4.bean.CourseBean;
 import in.co.rays.proj4.bean.StudentBean;
@@ -22,7 +25,8 @@ public class testSubjectModel {
 //		testUpdate();
 //		testDelete();
 //		testFindByPk();
-		testFindByName();
+//		testFindByName();
+		testSearch();
 
 		SubjectModel model = new SubjectModel();
 
@@ -142,5 +146,35 @@ public class testSubjectModel {
 		}
 
 	}
+	public static void testSearch() {
 
-}
+		try {
+			SubjectModel model = new SubjectModel();
+			SubjectBean bean = new SubjectBean();
+			List list = new ArrayList();
+			bean.setId(1);
+			list = model.search(bean, 0, 0);
+			if (list.size() < 0) {
+				System.out.println("Test Serach fail");
+			}
+			Iterator it = list.iterator();
+			while (it.hasNext()) {
+				bean = (SubjectBean) it.next();
+				System.out.println(bean.getId());
+				System.out.println(bean.getName());
+				System.out.println(bean.getDescription());
+				System.out.println(bean.getCreatedBy());
+				System.out.println(bean.getModifiedBy());
+				System.out.println(bean.getCreatedDatetime());
+				System.out.println(bean.getModifiedDatetime());
+
+			}
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		}
+	}
+	}
+
+
+
+

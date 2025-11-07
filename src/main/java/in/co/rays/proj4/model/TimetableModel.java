@@ -232,8 +232,10 @@ public class TimetableModel {
 	public TimetableBean checkBySubjectName(Long courseId, Long subjectId, Date examDate) throws ApplicationException {
 		StringBuffer sql = new StringBuffer(
 				"select * from st_timetable where course_id = ? and subject_id = ? and exam_date = ?");
-		TimetableBean bean = null;
+
+		TimetableBean bean= null;
 		Connection conn = null;
+		
 
 		try {
 			conn = JDBCDataSource.getConnection();
@@ -244,7 +246,7 @@ public class TimetableModel {
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				bean = new TimetableBean();
+				 bean = new TimetableBean();
 				bean.setId(rs.getLong(1));
 				bean.setSemester(rs.getString(2));
 				bean.setDescription(rs.getString(3));
@@ -258,6 +260,7 @@ public class TimetableModel {
 				bean.setModifiedBy(rs.getString(11));
 				bean.setCreatedDatetime(rs.getTimestamp(12));
 				bean.setModifiedDatetime(rs.getTimestamp(13));
+				
 			}
 			rs.close();
 			pstmt.close();

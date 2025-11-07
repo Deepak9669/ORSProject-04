@@ -27,7 +27,7 @@ public class TestTimetableModel {
 //		testUpdate();
 //		testDelete();
 //		testFindByPk();
-//		testcheckByCourseName();
+		testcheckByCourseName();
 //		testcheckBySubjectName();
 //		testcheckBySemester();
 //		testcheckByExamTime();
@@ -148,8 +148,9 @@ public class TestTimetableModel {
 
 		try {
 			TimetableModel model = new TimetableModel();
-			java.sql.Date examDate = java.sql.Date.valueOf("2025-10-14");
-			TimetableBean bean = model.checkByCourseName(1L, examDate);
+	TimetableBean bean = new TimetableBean ();
+			java.sql.Date examDate = java.sql.Date.valueOf("2025-10-12");
+			 bean = model.checkByCourseName(1L, examDate);
 			if (bean == null) {
 				System.out.println("Test Find By PK fail");
 			}

@@ -43,8 +43,8 @@ public class SubjectModel {
 		CourseBean courseBean = courseModel.findByPk(bean.getCourseId());
 		bean.setCourseName(courseBean.getName());
 
-		SubjectBean duplicateSubject = findByName(bean.getName());
-		if (duplicateSubject != null) {
+		SubjectBean existBean = findByName(bean.getName());
+		if (existBean != null) {
 			throw new DuplicateRecordException("Subject Name already exists");
 		}
 
@@ -84,6 +84,12 @@ public class SubjectModel {
 		CourseModel courseModel = new CourseModel();
 		CourseBean courseBean = courseModel.findByPk(bean.getCourseId());
 		bean.setCourseName(courseBean.getName());
+		
+		SubjectBean existBean = findByName(bean.getName());
+		if (existBean != null && existBean.getId() != bean.getId()) {
+			throw new DuplicateRecordException("Subject Name already exists");
+		}
+		
 		try {
 			conn = JDBCDataSource.getConnection();
 

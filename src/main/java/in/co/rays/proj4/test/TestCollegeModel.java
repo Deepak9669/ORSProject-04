@@ -18,7 +18,7 @@ import in.co.rays.proj4.model.UserModel;
 
 public class TestCollegeModel {
 
-	public static void main(String[] args) throws DatabaseException {
+	public static void main(String[] args)  {
 
 		testAdd();
 //		testUpdate();
@@ -27,9 +27,14 @@ public class TestCollegeModel {
 //		testFindByName();
 //		testSearch();
 
-//		CollegeModel model = new CollegeModel();
-//
-//		System.out.println(model.nextPk());
+		CollegeModel model = new CollegeModel();
+
+		try {
+			System.out.println(model.nextPk());
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static void testAdd() {

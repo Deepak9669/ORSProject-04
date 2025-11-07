@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import in.co.rays.proj4.bean.CourseBean;
+import in.co.rays.proj4.bean.FacultyBean;
 import in.co.rays.proj4.bean.SubjectBean;
 import in.co.rays.proj4.bean.TimetableBean;
 import in.co.rays.proj4.exception.ApplicationException;
@@ -357,6 +358,9 @@ public class TimetableModel {
 			JDBCDataSource.closeConnection(conn);
 		}
 		return bean;
+	}
+	public List<TimetableBean> list() throws ApplicationException{
+		return search(null, 0, 0);
 	}
 
 	public List<TimetableBean> search(TimetableBean bean, int pageNo, int pageSize) throws ApplicationException {

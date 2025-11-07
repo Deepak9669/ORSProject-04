@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.co.rays.proj4.bean.FacultyBean;
 import in.co.rays.proj4.bean.MarksheetBean;
 import in.co.rays.proj4.bean.StudentBean;
 import in.co.rays.proj4.exception.ApplicationException;
@@ -45,15 +46,15 @@ public class MarksheetModel {
 		StudentBean studentbean = studentModel.findByPk(bean.getStudentId());
 		bean.setName(studentbean.getFirstName() + " " + studentbean.getLastName());
 
-		MarksheetBean duplicateMarksheet = findByRollNo(bean.getRollNo());
+		MarksheetBean existBean = findByRollNo(bean.getRollNo());
 
-		if (duplicateMarksheet != null) {
+		if (existBean != null) {
 			throw new DuplicateRecordException("Roll Number already exists");
 		}
 
 		try {
-			conn = JDBCDataSource.getConnection();
 			pk = nextPk();
+			conn = JDBCDataSource.getConnection();
 			conn.setAutoCommit(false); // Begin transaction
 			PreparedStatement pstmt = conn
 					.prepareStatement("insert into st_marksheet values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -89,9 +90,9 @@ public class MarksheetModel {
 
 		Connection conn = null;
 
-		MarksheetBean beanExist = findByRollNo(bean.getRollNo());
+		MarksheetBean existBean = findByRollNo(bean.getRollNo());
 
-		if (beanExist != null && beanExist.getId() != bean.getId()) {
+		if (existBean != null && existBean.getId() != bean.getId()) {
 			throw new DuplicateRecordException("Roll No is already exist");
 		}
 
@@ -226,6 +227,10 @@ public class MarksheetModel {
 		return bean;
 	}
 
+	public List<MarksheetBean> list() throws ApplicationException {
+		return search(null, 0, 0);
+	}
+
 	public List<MarksheetBean> search(MarksheetBean bean, int pageNo, int pageSize) throws ApplicationException {
 
 		StringBuffer sql = new StringBuffer("select * from st_marksheet where 1=1");
@@ -286,5 +291,4 @@ public class MarksheetModel {
 		return list;
 	}
 
-	
 }

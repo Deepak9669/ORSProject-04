@@ -48,9 +48,9 @@ public class CourseModel {
 		Connection conn = null;
 		int pk = 0;
 
-		CourseBean duplicateCourse = findByName(bean.getName());
+		CourseBean existBean = findByName(bean.getName());
 
-		if (duplicateCourse != null) {
+		if (existBean != null) {
 			throw new DuplicateRecordException("Course Name already exists");
 		}
 
@@ -87,8 +87,8 @@ public class CourseModel {
 	public void update(CourseBean bean) throws ApplicationException, DuplicateRecordException {
 		Connection conn = null;
 
-		CourseBean duplicateCourse = findByName(bean.getName());
-		if (duplicateCourse != null && duplicateCourse.getId() != bean.getId()) {
+		CourseBean existBean = findByName(bean.getName());
+		if (existBean != null && existBean.getId() != bean.getId()) {
 			throw new DuplicateRecordException("Course already exists");
 		}
 		try {

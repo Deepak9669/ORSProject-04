@@ -18,7 +18,7 @@ import in.co.rays.proj4.model.StudentModel;
 
 public class TestMarksheetModel {
 
-	public static void main(String[] args) throws DatabaseException {
+	public static void main(String[] args)  {
 
 //		testAdd();
 //		testUpdate();
@@ -29,7 +29,11 @@ public class TestMarksheetModel {
 
 		MarksheetModel model = new MarksheetModel();
 
-		System.out.println(model.nextPk());
+		try {
+			System.out.println(model.nextPk());
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void testAdd() {

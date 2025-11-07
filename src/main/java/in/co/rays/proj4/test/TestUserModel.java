@@ -18,9 +18,9 @@ import in.co.rays.proj4.model.UserModel;
 
 public class TestUserModel {
 
-	public static void main(String[] args) throws DatabaseException, ParseException {
+	public static void main(String[] args) {
 
-//		testAdd();
+		testAdd();
 //		testDelete();
 //		testUpdate();
 //		testFindByPk();
@@ -29,16 +29,21 @@ public class TestUserModel {
 
 		UserModel model = new UserModel();
 
-		System.out.println(model.nextPk());
+		try {
+			System.out.println(model.nextPk());
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	public static void testAdd() throws ParseException {
+	public static void testAdd()  {
 
 		UserBean bean = new UserBean();
 		UserModel model = new UserModel();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
 
 		bean.setFirstName("dev");
 		bean.setLastName("verma");
@@ -53,11 +58,10 @@ public class TestUserModel {
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
 		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
 
-		try {
 			model.add(bean);
 
 			System.out.println("user added sucessfully");
-		} catch (ApplicationException | DuplicateRecordException e) {
+		} catch (ApplicationException | DuplicateRecordException | ParseException e) {
 
 			e.printStackTrace();
 		}
@@ -82,11 +86,11 @@ public class TestUserModel {
 
 	}
 
-	public static void testUpdate() throws ParseException {
-
+	public static void testUpdate()  {
+		
 		UserBean bean = new UserBean();
 		UserModel model = new UserModel();
-
+		try {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		bean.setId(2);
 		bean.setFirstName("dev");
@@ -101,17 +105,17 @@ public class TestUserModel {
 		bean.setModifiedBy("admin");
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
 		bean.setModifiedDatetime(new Timestamp(new Date().getTime()));
-
-		try {
-			model.update(bean);
+		
+					model.update(bean);
 
 			System.out.println("record update sucessfully");
-		} catch (DuplicateRecordException | ApplicationException e) {
+		} catch (DuplicateRecordException | ApplicationException |ParseException e) {
 
 			e.printStackTrace();
 		}
-
-	}
+		
+		}
+		
 
 	public static void testFindByPk() {
 

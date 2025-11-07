@@ -14,7 +14,7 @@ import in.co.rays.proj4.model.CourseModel;
 
 public class TestCourseModel {
 
-	public static void main(String[] args) throws DatabaseException {
+	public static void main(String[] args)  {
 
 //		testAdd();
 //		testUpdate();
@@ -24,7 +24,11 @@ public class TestCourseModel {
 		testSearch();
 
 		CourseModel model = new CourseModel();
-		System.out.println(model.nextPk());
+		try {
+			System.out.println(model.nextPk());
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
 
 	}
 

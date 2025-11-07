@@ -22,8 +22,8 @@ import in.co.rays.proj4.model.UserModel;
 
 public class TestTimetableModel {
 
-	public static void main(String[] args) throws ParseException {
-//		testAdd();
+	public static void main(String[] args)  {
+		testAdd();
 //		testUpdate();
 //		testDelete();
 //		testFindByPk();
@@ -41,7 +41,7 @@ public class TestTimetableModel {
 //		}
 	}
 
-	public static void testAdd() throws ParseException {
+	public static void testAdd()  {
 
 		TimetableBean bean = new TimetableBean();
 		TimetableModel model = new TimetableModel();
@@ -55,7 +55,6 @@ public class TestTimetableModel {
 			bean.setExamDate(sdf.parse("2025-10-12"));
 			bean.setExamTime("9Am to 1PM");
 			bean.setSubjectId(2);
-			;
 			bean.setCourseId(1);
 			bean.setCreatedBy("admin");
 			bean.setModifiedBy("admin");
@@ -64,7 +63,7 @@ public class TestTimetableModel {
 
 			model.add(bean);
 			System.out.println("TimeTable update sucessfully");
-		} catch (ApplicationException | DuplicateRecordException e) {
+		} catch (ApplicationException | DuplicateRecordException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

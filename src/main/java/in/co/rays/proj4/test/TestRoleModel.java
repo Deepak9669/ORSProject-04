@@ -16,17 +16,20 @@ import in.co.rays.proj4.model.RoleModel;
 
 public class TestRoleModel {
 
-	public static void main(String[] args) throws DatabaseException, ParseException, ApplicationException {
-//	testAdd();
+	public static void main(String[] args)  {
+	testAdd();
 //		testDelete();
 //		testUpdate();
 //		testFindByPk();
 //		testFindByName();
 		testSearch();
 //		
-//		RoleModel model= new RoleModel();
-		
-//		System.out.println(model.nextPk());
+		RoleModel model= new RoleModel();
+				try {
+					System.out.println(model.nextPk());
+				} catch (DatabaseException e) {
+					e.printStackTrace();
+				}
 
 	}
 

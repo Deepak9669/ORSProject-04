@@ -52,7 +52,7 @@ public class UserModel {
 		UserBean existBean = findByLogin(bean.getLogin());
 
 		if (existBean != null) {
-			throw new DuplicateRecordException("Role allready exists");
+			throw new DuplicateRecordException("user allready exists");
 		}
 
 		try {
@@ -130,7 +130,7 @@ public class UserModel {
 		UserBean existBean=findByLogin(bean.getLogin());
 		
 		if(existBean != null && existBean.getId()!= bean.getId()) {
-			throw new DuplicateRecordException("Role already exists");
+			throw new DuplicateRecordException("user already exists");
 		}
 
 		try {

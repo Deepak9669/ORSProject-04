@@ -118,7 +118,7 @@ public class FacultyModel {
 		bean.setSubjectName(subjectBean.getName());
 
 		FacultyBean existBean = findByEmail(bean.getEmail());
-		if (existBean != null && !(existBean.getId() == bean.getId())) {
+		if (existBean != null && existBean.getId() != bean.getId()){
 			throw new DuplicateRecordException("EmailId is already exist");
 		}
 		try {

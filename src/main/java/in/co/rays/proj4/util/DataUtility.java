@@ -103,7 +103,7 @@ public class DataUtility {
 	}
 
 	public static void main(String[] args) {
-		// Test getString
+//		 Test getString
 		System.out.println("getString Test:");
 		System.out.println("Original: '  Hello World  ' -> Trimmed: '" + getString("  Hello World  ") + "'");
 		System.out.println("Null input: " + getString(null));

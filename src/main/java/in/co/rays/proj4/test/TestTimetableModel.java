@@ -70,7 +70,7 @@ public class TestTimetableModel {
 
 	}
 
-	public static void testUpdate() throws ParseException {
+	public static void testUpdate()  {
 
 		TimetableBean bean = new TimetableBean();
 		TimetableModel model = new TimetableModel();
@@ -93,7 +93,7 @@ public class TestTimetableModel {
 
 			model.update(bean);
 			System.out.println("TimeTable added sucessfully");
-		} catch (ApplicationException | DuplicateRecordException e) {
+		} catch (ApplicationException | DuplicateRecordException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

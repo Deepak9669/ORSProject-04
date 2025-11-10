@@ -21,11 +21,11 @@ public class TestFacultyModel {
 	public static void main(String[] args) {
 
 //		testAdd();
-//		testUpdate();
+		testUpdate();
 //		testDelete();
 //		testFindByPk();
 //		testFindByEmail();
-		testSearch();
+//		testSearch();
 
 		FacultyModel model = new FacultyModel();
 
@@ -75,8 +75,8 @@ public class TestFacultyModel {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
-			bean.setId(3);
-			bean.setFirstName("ravi");
+			bean.setId(3L);
+			bean.setFirstName("rohit");
 			bean.setLastName("yadav");
 			bean.setDob(sdf.parse("2002-06-16"));
 			bean.setGender("male");

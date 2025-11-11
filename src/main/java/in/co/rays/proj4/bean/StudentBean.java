@@ -60,6 +60,14 @@ public class StudentBean extends BaseBean {
 	public void setCollegeName(String collegeName) {
 		this.collegeName = collegeName;
 	}
+	@Override
+	public String getKey() {
+		return null;
+	}
+	@Override
+	public String getValue() {
+		return null;
+	}
 	
 	
 	

@@ -74,13 +74,13 @@ public class HTMLUtility {
 
 	public static void testGetListByList() throws Exception {
 
-//		RoleModel model = new RoleModel();
+		RoleModel model = new RoleModel();
 
-		 UserModel model = new UserModel();
+//		 UserModel model = new UserModel();
 
 		List list = model.list();
 
-		String selectedValue = null;
+		String selectedValue = "1";
 
 		String htmlSelectFromList = HTMLUtility.getList("userId", null, list);
 
@@ -89,9 +89,9 @@ public class HTMLUtility {
 
 	public static void main(String[] args) throws Exception {
 
-		// testGetListByMap();
+		testGetListByMap();
 
-		testGetListByList();
+//		testGetListByList();
 
 	}
 }

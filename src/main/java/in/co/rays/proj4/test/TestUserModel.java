@@ -20,7 +20,7 @@ public class TestUserModel {
 
 	public static void main(String[] args) {
 
-		testAdd();
+//		testAdd();
 //		testDelete();
 //		testUpdate();
 //		testFindByPk();

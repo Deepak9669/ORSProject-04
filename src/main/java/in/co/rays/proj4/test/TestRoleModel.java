@@ -16,29 +16,27 @@ import in.co.rays.proj4.model.RoleModel;
 
 public class TestRoleModel {
 
-	public static void main(String[] args)  {
-	testAdd();
+	public static void main(String[] args) {
+//	testAdd();
 //		testDelete();
-//		testUpdate();
+		testUpdate();
 //		testFindByPk();
 //		testFindByName();
-		testSearch();
+//			testSearch();
 //		
-		RoleModel model= new RoleModel();
-				try {
-					System.out.println(model.nextPk());
-				} catch (DatabaseException e) {
-					e.printStackTrace();
-				}
+		RoleModel model = new RoleModel();
+		try {
+			System.out.println(model.nextPk());
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	public static void testAdd() {
-		
-	
 
 		RoleBean bean = new RoleBean();
-		bean.setName("kiosk");
+		bean.setName("kios");
 		bean.setDescription("kiosk");
 		bean.setCreatedBy("admin");
 		bean.setModifiedBy("admin");
@@ -50,7 +48,7 @@ public class TestRoleModel {
 			model.add(bean);
 			System.out.println("Role added successfully");
 
-		} catch (ApplicationException  | DuplicateRecordException e) {
+		} catch (ApplicationException | DuplicateRecordException e) {
 			e.printStackTrace();
 		}
 	}
@@ -59,13 +57,13 @@ public class TestRoleModel {
 		RoleBean bean = new RoleBean();
 		RoleModel model = new RoleModel();
 		try {
-			bean.setId(1);
+			bean.setId(5);
 
 			model.delete(bean);
 
-		} catch (Exception e) {
 			System.out.println("record deleted sucessfully");
-
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -76,8 +74,8 @@ public class TestRoleModel {
 		RoleModel model = new RoleModel();
 
 		bean.setId(1);
-		bean.setName("hr");
-		bean.setDescription("student");
+		bean.setName("admin");
+		bean.setDescription("kiosk");
 		bean.setCreatedBy("admin");
 		bean.setModifiedBy("admin");
 		bean.setCreatedDatetime(new Timestamp(new Date().getTime()));
@@ -85,7 +83,7 @@ public class TestRoleModel {
 
 		try {
 			model.update(bean);
-		} catch (ApplicationException |DuplicateRecordException e) {
+		} catch (ApplicationException | DuplicateRecordException e) {
 			e.printStackTrace();
 		}
 		System.out.println("Recorded updated sucessfully");
@@ -137,15 +135,16 @@ public class TestRoleModel {
 		}
 
 	}
+
 	public static void testSearch() {
-		
+
 		try {
-			RoleModel model=new RoleModel();
+			RoleModel model = new RoleModel();
 			RoleBean bean = new RoleBean();
-			List list= new ArrayList();
+			List list = new ArrayList();
 			bean.setName("student");
-			list =  model.search(bean, 0, 0);
-			if (list.size() <0) {
+			list = model.search(bean, 0, 0);
+			if (list.size() < 0) {
 				System.out.println("Test Serach fail");
 			}
 			Iterator it = list.iterator();

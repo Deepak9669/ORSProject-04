@@ -94,7 +94,7 @@ public class DataUtility {
 
 	}
 
-	public static long getTimestamp(Timestamp tm) {
+	public static long getTimestamp(Timestamp tm)  {
 		try {
 			return tm.getTime();
 		} catch (Exception e) {

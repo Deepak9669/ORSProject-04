@@ -40,7 +40,7 @@
 				<tr>
 					<th>Login ID:</th>
 					<td><input type="text" name="login"
-						value="<%=DataUtility.getStringData(bean.getLogin())%>>"></td>
+						value="<%=DataUtility.getStringData(bean.getLogin())%>"></td>
 					<td style="position: fixed;"><font color="red"> <%=ServletUtility.getErrorMessage("login", request)%></font></td>
 				</tr>
 				<tr>

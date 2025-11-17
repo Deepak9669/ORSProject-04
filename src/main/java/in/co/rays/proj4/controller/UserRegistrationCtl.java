@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import in.co.rays.proj4.bean.BaseBean;
 import in.co.rays.proj4.bean.UserBean;
+import in.co.rays.proj4.exception.ApplicationException;
+import in.co.rays.proj4.exception.DuplicateRecordException;
+import in.co.rays.proj4.model.UserModel;
 import in.co.rays.proj4.util.DataUtility;
 import in.co.rays.proj4.util.DataValidator;
 import in.co.rays.proj4.util.PropertyReader;
@@ -122,7 +125,32 @@ public class UserRegistrationCtl extends BaseCtl {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+	
+		String op = DataUtility.getString(request.getParameter("operation"));
+		
+		UserModel model = new UserModel();
+		
+		if (OP_SIGN_UP.equalsIgnoreCase(op)) {
+		
+		UserBean bean = (UserBean) populateBean(request);
+
+		try {
+			long pk = model.add(bean);
+			ServletUtility.setBean(bean, request);
+			ServletUtility.setSuccessMessage("Registration successful!", request);
+		} catch (DuplicateRecordException e) {
+			ServletUtility.setBean(bean, request);
+			ServletUtility.setErrorMessage("Login id already exists", request);
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+			return;
+		}
 		ServletUtility.forward(getView(), request, response);
+		} else if (OP_RESET.equalsIgnoreCase(op)) {
+			ServletUtility.redirect(ORSView.USER_REGISTRATION_CTL, request, response);
+			return;
+		}
 	}
 
 	@Override

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import in.co.rays.proj4.bean.BaseBean;
 import in.co.rays.proj4.bean.UserBean;
+import in.co.rays.proj4.exception.ApplicationException;
+import in.co.rays.proj4.exception.DuplicateRecordException;
+import in.co.rays.proj4.model.UserModel;
 import in.co.rays.proj4.util.DataUtility;
 import in.co.rays.proj4.util.DataValidator;
 import in.co.rays.proj4.util.PropertyReader;
@@ -20,9 +23,7 @@ public class LoginCtl extends BaseCtl {
 	public static final String OP_SIGN_UP = "Sign Up";
 
 
-	/**
-	 *
-	 */
+	
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -81,9 +82,13 @@ public class LoginCtl extends BaseCtl {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		UserModel model= new UserModel();
+		
 		String op = DataUtility.getString(request.getParameter("operation"));
 
 		if (OP_SIGN_IN.equalsIgnoreCase(op)) {
+
+		
 
 		} else if (OP_SIGN_UP.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.USER_REGISTRATION_CTL, request, response);

@@ -38,6 +38,11 @@
 	<b>|</b>
 	<a href="#"><b>Student List</b></a>
 	<b>|</b>
+	<a href="MarksheetCtl"><b>Add Marksheet</b></a>
+	<b>|</b>
+	<a href="#"><b>Marksheet List</b></a>
+	<b>|</b>
+
 	<a href="LoginCtl?operation=<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
 	<%
 		} else {

@@ -62,14 +62,11 @@ public class StudentBean extends BaseBean {
 	}
 	@Override
 	public String getKey() {
-		return null;
+		return id + "";
 	}
+
 	@Override
 	public String getValue() {
-		return null;
+		return firstName + " " + lastName;
 	}
-	
-	
-	
-
 }

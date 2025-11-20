@@ -21,7 +21,7 @@ import in.co.rays.proj4.util.DataValidator;
 import in.co.rays.proj4.util.PropertyReader;
 import in.co.rays.proj4.util.ServletUtility;
 
-@WebServlet(name = "MarksheetCtl", urlPatterns = { "/StudentCtl" })
+@WebServlet(name = "MarksheetCtl", urlPatterns = { "/MarksheetCtl" })
 
 public class MarksheetCtl extends BaseCtl {
 
@@ -133,7 +133,7 @@ public class MarksheetCtl extends BaseCtl {
 		ServletUtility.forward(getView(), request, response);
 
 	}
-
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 

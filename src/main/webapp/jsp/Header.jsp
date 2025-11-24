@@ -23,6 +23,16 @@
 		(<%=session.getAttribute("role")%>)
 	</h3>
 
+	<a href="<%=ORSView.MY_PROFILE_CTL %>"><b>MyProfile </b></a>
+		<b>|</b>
+	<a href="<%=ORSView.MARKSHEET_MERIT_LIST_CTL %>"><b>MarksheetMeritList </b></a>
+	<b>|</b>
+	<a href="<%=ORSView.GET_MARKSHEET_CTL %>"><b>GetMarksheet </b></a>
+	<b>|</b>
+	<a href="<%=ORSView.CHANGE_PASSWORD_CTL %>"><b>ChangePassword </b></a>
+	<b>|</b>
+	<a href="<%=ORSView.FORGET_PASSWORD_CTL %>"><b>ForgetPassword </b></a>
+	<b>|</b>
 	<a href="<%=ORSView.USER_CTL %>"><b>Add User</b></a>
 	<b>|</b>
 	<a href="<%=ORSView.USER_LIST_CTL %>"><b>User List</b></a>

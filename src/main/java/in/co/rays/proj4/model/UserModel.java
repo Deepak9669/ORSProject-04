@@ -13,6 +13,9 @@ import in.co.rays.proj4.exception.ApplicationException;
 import in.co.rays.proj4.exception.DatabaseException;
 import in.co.rays.proj4.exception.DuplicateRecordException;
 import in.co.rays.proj4.exception.RecordNotFoundException;
+import in.co.rays.proj4.util.EmailBuilder;
+import in.co.rays.proj4.util.EmailMessage;
+import in.co.rays.proj4.util.EmailUtility;
 import in.co.rays.proj4.util.JDBCDataSource;
 
 public class UserModel {
@@ -382,21 +385,21 @@ public boolean changePassword(Long id, String oldPassword, String newPassword)
 		throw new RecordNotFoundException("Old Password is Invalid");
 	}
 
-//	HashMap<String, String> map = new HashMap<String, String>();
-//	map.put("login", beanExist.getLogin());
-//	map.put("password", beanExist.getPassword());
-//	map.put("firstName", beanExist.getFirstName());
-//	map.put("lastName", beanExist.getLastName());
-//
-//	String message = EmailBuilder.getChangePasswordMessage(map);
-//
-//	EmailMessage msg = new EmailMessage();
-//	msg.setTo(beanExist.getLogin());
-//	msg.setSubject("ORSProject-04 Password has been changed Successfully.");
-//	msg.setMessage(message);
-//	msg.setMessageType(EmailMessage.HTML_MSG);
-//
-//	EmailUtility.sendMail(msg);
+	HashMap<String, String> map = new HashMap<String, String>();
+	map.put("login", beanExist.getLogin());
+	map.put("password", beanExist.getPassword());
+	map.put("firstName", beanExist.getFirstName());
+	map.put("lastName", beanExist.getLastName());
+
+	String message = EmailBuilder.getChangePasswordMessage(map);
+
+	EmailMessage msg = new EmailMessage();
+	msg.setTo(beanExist.getLogin());
+	msg.setSubject("ORSProject-04 Password has been changed Successfully.");
+	msg.setMessage(message);
+	msg.setMessageType(EmailMessage.HTML_MSG);
+
+	EmailUtility.sendMail(msg);
 
 	return flag;
 }
@@ -411,27 +414,49 @@ public boolean forgetPassword(String login) throws RecordNotFoundException, Appl
 	}
 
 	try {
-//		HashMap<String, String> map = new HashMap<String, String>();
-//		map.put("login", userData.getLogin());
-//		map.put("password", userData.getPassword());
-//		map.put("firstName", userData.getFirstName());
-//		map.put("lastName", userData.getLastName());
-//
-//		String message = EmailBuilder.getForgetPasswordMessage(map);
-//
-//		EmailMessage msg = new EmailMessage();
-//		msg.setTo(login);
-//		msg.setSubject("ORSProject-04 Password Reset");
-//		msg.setMessage(message);
-//		msg.setMessageType(EmailMessage.HTML_MSG);
-//
-//		EmailUtility.sendMail(msg);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("login", userData.getLogin());
+		map.put("password", userData.getPassword());
+		map.put("firstName", userData.getFirstName());
+		map.put("lastName", userData.getLastName());
+
+		String message = EmailBuilder.getForgetPasswordMessage(map);
+
+		EmailMessage msg = new EmailMessage();
+		msg.setTo(login);
+		msg.setSubject("ORSProject-04 Password Reset");
+		msg.setMessage(message);
+		msg.setMessageType(EmailMessage.HTML_MSG);
+
+		EmailUtility.sendMail(msg);
 		flag = true;
 	} catch (Exception e) {
 		throw new ApplicationException("Please check your internet connection..!!");
 	}
 	return flag;
 }
+public long registerUser(UserBean bean) throws DuplicateRecordException, ApplicationException {
+
+	long pk = add(bean);
+
+	HashMap<String, String> map = new HashMap<String, String>();
+	map.put("login", bean.getLogin());
+	map.put("password", bean.getPassword());
+
+	String message = EmailBuilder.getUserRegistrationMessage(map);
+
+	EmailMessage msg = new EmailMessage();
+
+	msg.setTo(bean.getLogin());
+	msg.setSubject("Registration is successful for ORSProject-04");
+	msg.setMessage(message);
+	msg.setMessageType(EmailMessage.HTML_MSG);
+
+	EmailUtility.sendMail(msg);
+
+	return pk;
 }
+}
+
 
 

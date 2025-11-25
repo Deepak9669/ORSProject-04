@@ -71,7 +71,7 @@
 				</tr>
 				<tr>
 					<th>DOB:</th>
-					<td><input type="date" name="dob" style="width: 98%"
+					<td><input type="text" id="udate" name="dob" style="width: 98%"
 					value="<%=DataUtility.getDateString(bean.getDob())%>"></td>
 
 					<td style="position: fixed;"><font color="red"> <%=ServletUtility.getErrorMessage("dob", request)%></font></td>

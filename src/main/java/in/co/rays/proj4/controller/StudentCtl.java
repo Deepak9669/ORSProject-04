@@ -115,7 +115,23 @@ public class StudentCtl extends BaseCtl {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-			ServletUtility.forward(getView(), request, response);
+		Long id = DataUtility.getLong(request.getParameter("id"));
+
+		StudentModel model = new StudentModel();
+
+		if (id > 0) {
+			try {
+				StudentBean bean = model.findByPk(id);
+				ServletUtility.setBean(bean, request);
+			} catch (ApplicationException e) {
+				e.printStackTrace();
+				ServletUtility.handleException(e, request, response);
+				return;
+			}
+
+		}
+
+		ServletUtility.forward(getView(), request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -132,7 +148,7 @@ public class StudentCtl extends BaseCtl {
 			try {
 				long pk = model.add(bean);
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setSuccessMessage("Student added successfully", request);
+				ServletUtility.setSuccessMessage("Student update successfully", request);
 			} catch (DuplicateRecordException e) {
 				ServletUtility.setBean(bean, request);
 				ServletUtility.setErrorMessage("Student already exists", request);
@@ -141,7 +157,29 @@ public class StudentCtl extends BaseCtl {
 				ServletUtility.handleException(e, request, response);
 				return;
 			}
-		
+		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
+
+			StudentBean bean = (StudentBean) populateBean(request);
+
+			try {
+				if (id > 0) {
+
+					model.update(bean);
+				}
+				ServletUtility.setBean(bean, request);
+				ServletUtility.setSuccessMessage("Student added sucessfully", request);
+			} catch (DuplicateRecordException e) {
+				ServletUtility.setBean(bean, request);
+				ServletUtility.setErrorMessage("Student already exists", request);
+			} catch (ApplicationException e) {
+				e.printStackTrace();
+				ServletUtility.handleException(e, request, response);
+				return;
+			}
+		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
+			ServletUtility.redirect(ORSView.STUDENT_LIST_CTL, request, response);
+			return;
+
 		} else if (OP_RESET.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.STUDENT_CTL, request, response);
 			return;

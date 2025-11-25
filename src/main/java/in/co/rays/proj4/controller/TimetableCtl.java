@@ -1,3 +1,4 @@
+
 package in.co.rays.proj4.controller;
 
 import java.io.IOException;
@@ -106,7 +107,20 @@ public class TimetableCtl extends BaseCtl {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		
+		long id = DataUtility.getLong(request.getParameter("id"));
+
+		TimetableModel model = new TimetableModel();
+
+		if (id > 0) {
+			try {
+				TimetableBean bean = model.findByPk(id);
+				ServletUtility.setBean(bean, request);
+			} catch (ApplicationException e) {
+				e.printStackTrace();
+				ServletUtility.handleException(e, request, response);
+				return;
+			}
+		}
 		ServletUtility.forward(getView(), request, response);
 	}
 
@@ -153,7 +167,37 @@ public class TimetableCtl extends BaseCtl {
 				return;
 			}
 
-		
+		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
+
+			TimetableBean bean = (TimetableBean) populateBean(request);
+
+			TimetableBean bean4;
+
+			try {
+
+				bean4 = model.checkByExamTime(bean.getCourseId(), bean.getSubjectId(), bean.getSemester(),
+						bean.getExamDate(), bean.getExamTime(), bean.getDescription());
+
+				if (id > 0 && bean4 == null) {
+					model.update(bean);
+					ServletUtility.setBean(bean, request);
+					ServletUtility.setSuccessMessage("Timetable updated successfully", request);
+				} else {
+					bean = (TimetableBean) populateBean(request);
+					ServletUtility.setBean(bean, request);
+					ServletUtility.setErrorMessage("Timetable already exist!", request);
+				}
+			} catch (DuplicateRecordException e) {
+				ServletUtility.setBean(bean, request);
+				ServletUtility.setErrorMessage("Timetable already exist!", request);
+			} catch (ApplicationException e) {
+				e.printStackTrace();
+				ServletUtility.handleException(e, request, response);
+				return;
+			}
+		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
+			ServletUtility.redirect(ORSView.TIMETABLE_LIST_CTL, request, response);
+			return;
 		} else if (OP_RESET.equalsIgnoreCase(op)) {
 			ServletUtility.redirect(ORSView.TIMETABLE_CTL, request, response);
 			return;

@@ -1,3 +1,4 @@
+
 package in.co.rays.proj4.controller;
 
 import java.io.IOException;
@@ -18,8 +19,8 @@ import in.co.rays.proj4.util.DataUtility;
 import in.co.rays.proj4.util.PropertyReader;
 import in.co.rays.proj4.util.ServletUtility;
 
-@WebServlet(name = "TimetableLiistCtl", urlPatterns = { "/TimetableLiistCtl" })
-public class TimetableLiistCtl extends BaseCtl {
+@WebServlet(name = "TimetableListCtl", urlPatterns = { "/TimetableListCtl" })
+public class TimetableListCtl extends BaseCtl {
 
 	@Override
 	protected void preload(HttpServletRequest request) {
@@ -37,7 +38,6 @@ public class TimetableLiistCtl extends BaseCtl {
 		} catch (ApplicationException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -52,7 +52,6 @@ public class TimetableLiistCtl extends BaseCtl {
 		return bean;
 	}
 
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -68,8 +67,8 @@ public class TimetableLiistCtl extends BaseCtl {
 
 			if (list == null || list.isEmpty()) {
 				ServletUtility.setErrorMessage("No record found", request);
-
 			}
+
 			ServletUtility.setList(list, request);
 			ServletUtility.setPageNo(pageNo, request);
 			ServletUtility.setPageSize(pageSize, request);
@@ -77,15 +76,18 @@ public class TimetableLiistCtl extends BaseCtl {
 			request.setAttribute("nextListSize", next.size());
 
 			ServletUtility.forward(getView(), request, response);
+
 		} catch (ApplicationException e) {
 			e.printStackTrace();
 			ServletUtility.handleException(e, request, response);
 			return;
 		}
 	}
+
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		List list = null;
 		List next = null;
 
@@ -159,11 +161,9 @@ public class TimetableLiistCtl extends BaseCtl {
 			return;
 		}
 	}
-	
 
 	@Override
 	protected String getView() {
-		return ORSView.TIMETABLE_LIST_CTL;
+		return ORSView.TIMETABLE_LIST_VIEW;
 	}
-
 }

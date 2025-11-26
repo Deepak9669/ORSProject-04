@@ -63,7 +63,7 @@
 	<b>|</b>
 	<a href="<%=ORSView.MARKSHEET_LIST_CTL %>"><b>Marksheet List</b></a>
 	<b>|</b>
-	<a href="<%=ORSView.COLLEGE_CTL %>"><b>Add Course</b></a>
+	<a href="<%=ORSView.COLLEGE_CTL %>"><b>Add College</b></a>
 	<b>|</b>
 	<a href="<%=ORSView.COURSE_LIST_CTL %>"><b>Course List</b></a>
 	<b>|</b>
@@ -79,8 +79,10 @@
 	<b>|</b>
 	<a href="<%=ORSView.TIMETABLE_LIST_CTL %>"><b>Timetable List</b></a>
 	<b>|</b>
-
-	<a href="LoginCtl?operation=<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
+<b>|</b>
+	<a href="doc/index.html" target="blank"><b>Java Doc</b></a>
+	<b>|</b>
+	<a href="<%=ORSView.LOGIN_CTL %>?operation<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
 	<%
 		} else {
 	%>

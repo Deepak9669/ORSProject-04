@@ -1,4 +1,3 @@
-
 package in.co.rays.proj4.controller;
 
 import java.io.IOException;
@@ -19,11 +18,26 @@ import in.co.rays.proj4.util.DataValidator;
 import in.co.rays.proj4.util.PropertyReader;
 import in.co.rays.proj4.util.ServletUtility;
 
-@WebServlet(name = "MyProfileCtl", urlPatterns = { "/MyProfileCtl" })
+/**
+ * MyProfileCtl Controller is used to manage logged-in user profile.
+ * 
+ * User can view and update their profile and also navigate
+ * to change password screen.
+ * 
+ * @author Deepak Verma
+ * @version 1.0
+ */
+@WebServlet(name = "MyProfileCtl", urlPatterns = { "/ctl/MyProfileCtl" })
 public class MyProfileCtl extends BaseCtl {
 
 	public static final String OP_CHANGE_MY_PASSWORD = "Change Password";
 
+	/**
+	 * Validates My Profile form fields.
+	 * 
+	 * @param request HTTP request
+	 * @return true if validation passed otherwise false
+	 */
 	@Override
 	protected boolean validate(HttpServletRequest request) {
 
@@ -31,6 +45,7 @@ public class MyProfileCtl extends BaseCtl {
 
 		String op = DataUtility.getString(request.getParameter("operation"));
 
+		// Skip validation if change password button is clicked
 		if (OP_CHANGE_MY_PASSWORD.equalsIgnoreCase(op) || op == null) {
 			return pass;
 		}
@@ -57,7 +72,7 @@ public class MyProfileCtl extends BaseCtl {
 		}
 
 		if (DataValidator.isNull(request.getParameter("mobileNo"))) {
-			request.setAttribute("mobileNo", PropertyReader.getValue("error.require", "MobileNo"));
+			request.setAttribute("mobileNo", PropertyReader.getValue("error.require", "Mobile No"));
 			pass = false;
 		} else if (!DataValidator.isPhoneLength(request.getParameter("mobileNo"))) {
 			request.setAttribute("mobileNo", "Mobile No must have 10 digits");
@@ -75,23 +90,23 @@ public class MyProfileCtl extends BaseCtl {
 		return pass;
 	}
 
+	/**
+	 * Populates UserBean from profile form data.
+	 * 
+	 * @param request HTTP request
+	 * @return populated UserBean
+	 */
 	@Override
 	protected BaseBean populateBean(HttpServletRequest request) {
 
 		UserBean bean = new UserBean();
 
 		bean.setId(DataUtility.getLong(request.getParameter("id")));
-
 		bean.setLogin(DataUtility.getString(request.getParameter("login")));
-
 		bean.setFirstName(DataUtility.getString(request.getParameter("firstName")));
-
 		bean.setLastName(DataUtility.getString(request.getParameter("lastName")));
-
 		bean.setMobileNo(DataUtility.getString(request.getParameter("mobileNo")));
-
 		bean.setGender(DataUtility.getString(request.getParameter("gender")));
-
 		bean.setDob(DataUtility.getDate(request.getParameter("dob")));
 
 		populateDTO(bean, request);
@@ -99,11 +114,20 @@ public class MyProfileCtl extends BaseCtl {
 		return bean;
 	}
 
+	/**
+	 * Handles GET request to show user profile data.
+	 * 
+	 * @param request HTTP request
+	 * @param response HTTP response
+	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(true);
+
 		UserBean user = (UserBean) session.getAttribute("user");
+
 		long id = user.getId();
 
 		UserModel model = new UserModel();
@@ -112,21 +136,31 @@ public class MyProfileCtl extends BaseCtl {
 			try {
 				UserBean bean = model.findByPk(id);
 				ServletUtility.setBean(bean, request);
+
 			} catch (ApplicationException e) {
 				e.printStackTrace();
 				ServletUtility.handleException(e, request, response);
 				return;
 			}
 		}
+
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Handles POST request to update profile or redirect to change password page.
+	 * 
+	 * @param request HTTP request
+	 * @param response HTTP response
+	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(true);
 
 		UserBean user = (UserBean) session.getAttribute("user");
+
 		long id = user.getId();
 
 		String op = DataUtility.getString(request.getParameter("operation"));
@@ -134,7 +168,9 @@ public class MyProfileCtl extends BaseCtl {
 		UserModel model = new UserModel();
 
 		if (OP_SAVE.equalsIgnoreCase(op)) {
+
 			UserBean bean = (UserBean) populateBean(request);
+
 			try {
 				if (id > 0) {
 					user.setFirstName(bean.getFirstName());
@@ -142,25 +178,38 @@ public class MyProfileCtl extends BaseCtl {
 					user.setGender(bean.getGender());
 					user.setMobileNo(bean.getMobileNo());
 					user.setDob(bean.getDob());
+
 					model.update(user);
 				}
+
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setSuccessMessage("Profile has been updated Successfully. ", request);
+				ServletUtility.setSuccessMessage("Profile has been updated successfully.", request);
+
 			} catch (DuplicateRecordException e) {
+
 				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("Login id already exists", request);
+				ServletUtility.setErrorMessage("Login Id already exists", request);
+
 			} catch (ApplicationException e) {
 				e.printStackTrace();
 				ServletUtility.handleException(e, request, response);
 				return;
 			}
+
 		} else if (OP_CHANGE_MY_PASSWORD.equalsIgnoreCase(op)) {
+
 			ServletUtility.redirect(ORSView.CHANGE_PASSWORD_CTL, request, response);
 			return;
 		}
+
 		ServletUtility.forward(getView(), request, response);
 	}
 
+	/**
+	 * Returns My Profile page view.
+	 * 
+	 * @return My Profile JSP path
+	 */
 	@Override
 	protected String getView() {
 		return ORSView.MY_PROFILE_VIEW;

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.co.rays.proj4.bean.BaseBean;
-import in.co.rays.proj4.bean.CourseBean;
 import in.co.rays.proj4.bean.SubjectBean;
 import in.co.rays.proj4.exception.ApplicationException;
 import in.co.rays.proj4.model.CourseModel;
@@ -18,157 +17,207 @@ import in.co.rays.proj4.util.DataUtility;
 import in.co.rays.proj4.util.PropertyReader;
 import in.co.rays.proj4.util.ServletUtility;
 
-@WebServlet(name = "SubjectListCtl", urlPatterns = { "/SubjectListCtl" })
+/**
+ * SubjectListCtl Controller handles listing, searching,
+ * pagination and deletion of Subject records.
+ *
+ * It also preloads Subject and Course list.
+ *
+ * @author Deepak Verma
+ * @version 1.0
+ */
+@WebServlet(name = "SubjectListCtl", urlPatterns = { "/ctl/SubjectListCtl" })
 public class SubjectListCtl extends BaseCtl {
 
-	@Override
-	protected void preload(HttpServletRequest request) {
+    /**
+     * Preloads Subject list and Course list for dropdowns.
+     *
+     * @param request HTTP request object
+     */
+    @Override
+    protected void preload(HttpServletRequest request) {
 
-		SubjectModel subjectModel = new SubjectModel();
-		CourseModel courseModel = new CourseModel();
+        SubjectModel subjectModel = new SubjectModel();
+        CourseModel courseModel = new CourseModel();
 
-		try {
-			List subjectList = subjectModel.list();
-			request.setAttribute("subjectList", subjectList);
+        try {
+            List subjectList = subjectModel.list();
+            request.setAttribute("subjectList", subjectList);
 
-			List courseList = courseModel.list();
-			request.setAttribute("courseList", courseList);
+            List courseList = courseModel.list();
+            request.setAttribute("courseList", courseList);
 
-		} catch (ApplicationException e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	protected BaseBean populateBean(HttpServletRequest request) {
+    /**
+     * Populates SubjectBean using request parameters
+     * for search and filtering.
+     *
+     * @param request HTTP request object
+     * @return populated SubjectBean as BaseBean
+     */
+    @Override
+    protected BaseBean populateBean(HttpServletRequest request) {
 
-		SubjectBean bean = new SubjectBean();
+        SubjectBean bean = new SubjectBean();
 
-		bean.setName(DataUtility.getString(request.getParameter("name")));
-		bean.setCourseName(DataUtility.getString(request.getParameter("courseName")));
-		bean.setDescription(DataUtility.getString(request.getParameter("description")));
-		bean.setCourseId(DataUtility.getLong(request.getParameter("courseId")));
-		bean.setId(DataUtility.getLong(request.getParameter("subjectId")));
+        bean.setName(DataUtility.getString(request.getParameter("name")));
+        bean.setCourseName(DataUtility.getString(request.getParameter("courseName")));
+        bean.setDescription(DataUtility.getString(request.getParameter("description")));
+        bean.setCourseId(DataUtility.getLong(request.getParameter("courseId")));
+        bean.setId(DataUtility.getLong(request.getParameter("subjectId")));
 
-		return bean;
-	}
+        return bean;
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    /**
+     * Handles GET request to display Subject List page.
+     *
+     * @param request HTTP request
+     * @param response HTTP response
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		int pageNo = 1;
-		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
+        int pageNo = 1;
+        int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
 
-		SubjectBean bean = (SubjectBean) populateBean(request);
-		SubjectModel model = new SubjectModel();
+        SubjectBean bean = (SubjectBean) populateBean(request);
+        SubjectModel model = new SubjectModel();
 
-		try {
-			List<SubjectBean> list = model.search(bean, pageNo, pageSize);
-			List<SubjectBean> next = model.search(bean, pageNo + 1, pageSize);
+        try {
+            List<SubjectBean> list = model.search(bean, pageNo, pageSize);
+            List<SubjectBean> next = model.search(bean, pageNo + 1, pageSize);
 
-			if (list == null || list.isEmpty()) {
-				ServletUtility.setErrorMessage("No record found", request);
-			}
+            if (list == null || list.isEmpty()) {
+                ServletUtility.setErrorMessage("No record found", request);
+            }
 
-			ServletUtility.setList(list, request);
-			ServletUtility.setPageNo(pageNo, request);
-			ServletUtility.setPageSize(pageSize, request);
-			ServletUtility.setBean(bean, request);
-			request.setAttribute("nextListSize", next.size());
+            ServletUtility.setList(list, request);
+            ServletUtility.setPageNo(pageNo, request);
+            ServletUtility.setPageSize(pageSize, request);
+            ServletUtility.setBean(bean, request);
 
-			ServletUtility.forward(getView(), request, response);
+            request.setAttribute("nextListSize", next.size());
 
-		} catch (ApplicationException e) {
-			e.printStackTrace();
-			ServletUtility.handleException(e, request, response);
-			return;
-		}
-	}
+            ServletUtility.forward(getView(), request, response);
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+            ServletUtility.handleException(e, request, response);
+        }
+    }
 
+    /**
+     * Handles POST request for Search, Next, Previous,
+     * New, Delete, Reset and Back operations.
+     *
+     * @param request HTTP request
+     * @param response HTTP response
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		List list = null;
-		List next = null;
+        List list = null;
+        List next = null;
 
-		int pageNo = DataUtility.getInt(request.getParameter("pageNo"));
-		int pageSize = DataUtility.getInt(request.getParameter("pageSize"));
+        int pageNo = DataUtility.getInt(request.getParameter("pageNo"));
+        int pageSize = DataUtility.getInt(request.getParameter("pageSize"));
 
-		pageNo = (pageNo == 0) ? 1 : pageNo;
-		pageSize = (pageSize == 0) ? DataUtility.getInt(PropertyReader.getValue("page.size")) : pageSize;
+        pageNo = (pageNo == 0) ? 1 : pageNo;
+        pageSize = (pageSize == 0)
+                ? DataUtility.getInt(PropertyReader.getValue("page.size"))
+                : pageSize;
 
-		SubjectBean bean = (SubjectBean) populateBean(request);
-		SubjectModel model = new SubjectModel();
+        SubjectBean bean = (SubjectBean) populateBean(request);
+        SubjectModel model = new SubjectModel();
 
-		String op = DataUtility.getString(request.getParameter("operation"));
-		String[] ids = request.getParameterValues("ids");
+        String op = DataUtility.getString(request.getParameter("operation"));
+        String[] ids = request.getParameterValues("ids");
 
-		try {
+        try {
 
-			if (OP_SEARCH.equalsIgnoreCase(op) || "next".equalsIgnoreCase(op) || "previous".equalsIgnoreCase(op)) {
+            if (OP_SEARCH.equalsIgnoreCase(op)
+                    || OP_NEXT.equalsIgnoreCase(op)
+                    || OP_PREVIOUS.equalsIgnoreCase(op)) {
 
-				if (OP_SEARCH.equalsIgnoreCase(op)) {
-					pageNo = 1;
-				} else if (OP_NEXT.equalsIgnoreCase(op)) {
-					pageNo++;
-				} else if (OP_PREVIOUS.equalsIgnoreCase(op)&& pageNo >1) {
-					pageNo--;
-				}
+                if (OP_SEARCH.equalsIgnoreCase(op)) {
+                    pageNo = 1;
+                } else if (OP_NEXT.equalsIgnoreCase(op)) {
+                    pageNo++;
+                } else if (OP_PREVIOUS.equalsIgnoreCase(op) && pageNo > 1) {
+                    pageNo--;
+                }
 
-			} else if (OP_NEW.equalsIgnoreCase(op)) {
-				ServletUtility.redirect(ORSView.STUDENT_CTL, request, response);
-				return;
+            } else if (OP_NEW.equalsIgnoreCase(op)) {
 
-			} else if (OP_DELETE.equalsIgnoreCase(op)) {
-				pageNo = 1;
-				if (ids != null && ids.length > 0) {
-					SubjectBean deleteBean = new SubjectBean();
-					for (String id : ids) {
+                ServletUtility.redirect(ORSView.SUBJECT_CTL, request, response);
+                return;
 
-						deleteBean.setId(DataUtility.getInt(id));
-						model.delete(deleteBean);
+            } else if (OP_DELETE.equalsIgnoreCase(op)) {
 
-						ServletUtility.setSuccessMessage("Subject deleted successfully", request);
+                pageNo = 1;
 
-					}
+                if (ids != null && ids.length > 0) {
 
-				} else {
-					ServletUtility.setErrorMessage("Select at least one record", request);
-				}
+                    SubjectBean deleteBean = new SubjectBean();
 
-			} else if (OP_RESET.equalsIgnoreCase(op)) {
-				ServletUtility.redirect(ORSView.SUBJECT_LIST_CTL, request, response);
-				return;
+                    for (String id : ids) {
+                        deleteBean.setId(DataUtility.getInt(id));
+                        model.delete(deleteBean);
+                    }
 
-			} else if (OP_BACK.equalsIgnoreCase(op)) {
-				ServletUtility.redirect(ORSView.SUBJECT_LIST_CTL, request, response);
-				return;
-			}
-			list = model.search(bean, pageNo, pageSize);
-			next = model.search(bean, pageNo + 1, pageSize);
+                    ServletUtility.setSuccessMessage("Subject deleted successfully", request);
 
-			if (list == null || list.isEmpty()) {
-				ServletUtility.setErrorMessage("No record found", request);
-			}
+                } else {
+                    ServletUtility.setErrorMessage("Select at least one record", request);
+                }
 
-			ServletUtility.setList(list, request);
-			ServletUtility.setPageNo(pageNo, request);
-			ServletUtility.setPageSize(pageSize, request);
-			ServletUtility.setBean(bean, request);
-			request.setAttribute("nextListSize", next.size());
+            } else if (OP_RESET.equalsIgnoreCase(op)) {
 
-			ServletUtility.forward(getView(), request, response);
+                ServletUtility.redirect(ORSView.SUBJECT_LIST_CTL, request, response);
+                return;
 
-		} catch (ApplicationException e) {
-			e.printStackTrace();
-			ServletUtility.handleException(e, request, response);
-			return;
-		}
-	}
-	@Override
-	protected String getView() {
-		return ORSView.SUBJECT_LIST_VIEW;
-	}
+            } else if (OP_BACK.equalsIgnoreCase(op)) {
+
+                ServletUtility.redirect(ORSView.SUBJECT_LIST_CTL, request, response);
+                return;
+            }
+
+            list = model.search(bean, pageNo, pageSize);
+            next = model.search(bean, pageNo + 1, pageSize);
+
+            if (list == null || list.isEmpty()) {
+                ServletUtility.setErrorMessage("No record found", request);
+            }
+
+            ServletUtility.setList(list, request);
+            ServletUtility.setPageNo(pageNo, request);
+            ServletUtility.setPageSize(pageSize, request);
+            ServletUtility.setBean(bean, request);
+
+            request.setAttribute("nextListSize", next.size());
+
+            ServletUtility.forward(getView(), request, response);
+
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+            ServletUtility.handleException(e, request, response);
+        }
+    }
+
+    /**
+     * Returns Subject List view page path.
+     *
+     * @return Subject List JSP path
+     */
+    @Override
+    protected String getView() {
+        return ORSView.SUBJECT_LIST_VIEW;
+    }
 }

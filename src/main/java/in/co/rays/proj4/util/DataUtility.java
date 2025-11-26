@@ -4,155 +4,154 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * DataUtility class provides helper methods for converting
+ * Strings, Dates, Timestamps and validating input data.
+ * 
+ * @author Deepak Verma
+ * @version 1.0
+ */
 public class DataUtility {
 
 	public static final String APP_DATE_FORMAT = "dd-MM-yyyy";
-
 	public static final String APP_TIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
 
 	private static final SimpleDateFormat formatter = new SimpleDateFormat(APP_DATE_FORMAT);
-
 	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat(APP_TIME_FORMAT);
 
+	/**
+	 * Trims string if not null
+	 */
 	public static String getString(String val) {
 		if (DataValidator.isNotNull(val)) {
 			return val.trim();
-		} else {
-			return val;
 		}
+		return val;
 	}
 
+	/**
+	 * Convert object into string safely
+	 */
 	public static String getStringData(Object val) {
-		if (val != null) {
-			return val.toString();
-		} else {
-			return "";
-		}
+		return (val != null) ? val.toString() : "";
 	}
 
+	/**
+	 * Convert string into int safely
+	 */
 	public static int getInt(String val) {
 		if (DataValidator.isInteger(val)) {
 			return Integer.parseInt(val);
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
+	/**
+	 * Convert string into long safely
+	 */
 	public static long getLong(String val) {
 		if (DataValidator.isLong(val)) {
 			return Long.parseLong(val);
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
+	/**
+	 * Convert string into Date
+	 */
 	public static Date getDate(String val) {
-		Date date = null;
 		try {
-			date = formatter.parse(val);
+			if (DataValidator.isNotNull(val)) {
+				return formatter.parse(val);
+			}
 		} catch (Exception e) {
-
+			System.out.println("Date parsing error: " + e.getMessage());
 		}
-		return date;
+		return null;
 	}
 
+	/**
+	 * Convert Date to String
+	 */
 	public static String getDateString(Date date) {
 		try {
-			return formatter.format(date);
+			if (date != null) {
+				return formatter.format(date);
+			}
 		} catch (Exception e) {
+			System.out.println("Date format error: " + e.getMessage());
 		}
 		return "";
 	}
 
+	/**
+	 * Convert String to Timestamp
+	 */
 	public static Timestamp getTimestamp(String val) {
-		Timestamp timeStamp = null;
 		try {
-			timeStamp = new Timestamp((timeFormatter.parse(val)).getTime());
+			if (DataValidator.isNotNull(val)) {
+				return new Timestamp(timeFormatter.parse(val).getTime());
+			}
 		} catch (Exception e) {
-			return null;
+			System.out.println("Timestamp parsing error: " + e.getMessage());
 		}
-		return timeStamp;
+		return null;
 	}
 
-	public static Timestamp getTimestamp(long l) {
-		Timestamp timeStamp = null;
-		try {
-			timeStamp = new Timestamp(l);
-		} catch (Exception e) {
-			return null;
-		}
-		return timeStamp;
+	/**
+	 * Convert long to Timestamp
+	 */
+	public static Timestamp getTimestamp(long time) {
+		return new Timestamp(time);
 	}
 
+	/**
+	 * Get current timestamp
+	 */
 	public static Timestamp getCurrentTimestamp() {
-		Timestamp timeStamp = null;
-		try {
-			timeStamp = new Timestamp(new Date().getTime());
-		} catch (Exception e) {
-		}
-		return timeStamp;
-
+		return new Timestamp(System.currentTimeMillis());
 	}
 
-	public static long getTimestamp(Timestamp tm)  {
-		try {
+	/**
+	 * Convert Timestamp to long
+	 */
+	public static long getTimestamp(Timestamp tm) {
+		if (tm != null) {
 			return tm.getTime();
-		} catch (Exception e) {
-			return 0;
 		}
+		return 0;
 	}
 
+	/**
+	 * Testing Method
+	 */
 	public static void main(String[] args) {
-//		 Test getString
-		System.out.println("getString Test:");
-		System.out.println("Original: '  Hello World  ' -> Trimmed: '" + getString("  Hello World  ") + "'");
-		System.out.println("Null input: " + getString(null));
 
-		// Test getStringData
-		System.out.println("\ngetStringData Test:");
-		System.out.println("Object to String: " + getStringData(1234));
-		System.out.println("Null Object: '" + getStringData(null) + "'");
+		System.out.println("---- DataUtility Test ----");
 
-		// Test getInt
-		System.out.println("\ngetInt Test:");
-		System.out.println("Valid Integer String: '124' -> " + getInt("124"));
-		System.out.println("Invalid Integer String: 'abc' -> " + getInt("abc"));
-		System.out.println("Null String: -> " + getInt(null));
+		// getString
+		System.out.println("getString: " + getString("   Hello India   "));
 
-		// Test getLong
-		System.out.println("\ngetLong Test:");
-		System.out.println("Valid Long String: '123456789' -> " + getLong("123456789"));
-		System.out.println("Invalid Long String: 'abc' -> " + getLong("abc"));
+		// getInt
+		System.out.println("getInt: " + getInt("123"));
 
-		// Test getDate
-		System.out.println("\ngetDate Test:");
-		String dateStr = "10/15/2024";
+		// getLong
+		System.out.println("getLong: " + getLong("999999"));
+
+		// Correct format: dd-MM-yyyy
+		String dateStr = "15-10-2024";
 		Date date = getDate(dateStr);
-		System.out.println("String to Date: '" + dateStr + "' -> " + date);
+		System.out.println("Date: " + date);
 
-		// Test getDateString
-		System.out.println("\ngetDateString Test:");
-		System.out.println("Date to String: '" + getDateString(new Date()) + "'");
+		// Date to String
+		System.out.println("Formatted Date: " + getDateString(date));
 
-		// Test getTimestamp (String)
-		System.out.println("\ngetTimestamp(String) Test:");
-		String timestampStr = "10/15/2024 10:30:45";
-		Timestamp timestamp = getTimestamp(timestampStr);
-		System.out.println("String to Timestamp: '" + timestampStr + "' -> " + timestamp);
+		// Correct timestamp format
+		String timestampStr = "15-10-2024 10:30:45";
+		Timestamp ts = getTimestamp(timestampStr);
+		System.out.println("Timestamp: " + ts);
 
-		// Test getTimestamp (long)
-		System.out.println("\ngetTimestamp(long) Test:");
-		long currentTimeMillis = System.currentTimeMillis();
-		Timestamp ts = getTimestamp(currentTimeMillis);
-		System.out.println("Current Time Millis to Timestamp: '" + currentTimeMillis + "' -> " + ts);
-
-		// Test getCurrentTimestamp
-		System.out.println("\ngetCurrentTimestamp Test:");
-		Timestamp currentTimestamp = getCurrentTimestamp();
-		System.out.println("Current Timestamp: " + currentTimestamp);
-
-		// Test getTimestamp(Timestamp)
-		System.out.println("\ngetTimestamp(Timestamp) Test:");
-		System.out.println("Timestamp to long: " + getTimestamp(currentTimestamp));
+		// Current Timestamp
+		System.out.println("Current Timestamp: " + getCurrentTimestamp());
 	}
 }

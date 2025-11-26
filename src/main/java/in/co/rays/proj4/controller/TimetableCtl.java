@@ -1,4 +1,3 @@
-
 package in.co.rays.proj4.controller;
 
 import java.io.IOException;
@@ -21,192 +20,258 @@ import in.co.rays.proj4.util.DataValidator;
 import in.co.rays.proj4.util.PropertyReader;
 import in.co.rays.proj4.util.ServletUtility;
 
-@WebServlet(name = "TimetableCtl", urlPatterns = { "/TimetableCtl" })
+/**
+ * TimetableCtl Controller handles operations related to Timetable
+ * such as Add, Update, View and Validation.
+ *
+ * It also preloads Course and Subject lists for dropdowns used
+ * in Timetable form.
+ *
+ * @author Deepak Verma
+ * @version 1.0
+ */
+@WebServlet(name = "TimetableCtl", urlPatterns = { "/ctl/TimetableCtl" })
 public class TimetableCtl extends BaseCtl {
 
-	@Override
-	protected void preload(HttpServletRequest request) {
+    /**
+     * Preloads Subject and Course lists for dropdown fields.
+     *
+     * @param request HTTP request object
+     */
+    @Override
+    protected void preload(HttpServletRequest request) {
 
-		SubjectModel subjectModel = new SubjectModel();
-		CourseModel courseModel = new CourseModel();
+        SubjectModel subjectModel = new SubjectModel();
+        CourseModel courseModel = new CourseModel();
 
-		try {
-			List subjectList = subjectModel.list();
-			request.setAttribute("subjectList", subjectList);
+        try {
+            List subjectList = subjectModel.list();
+            request.setAttribute("subjectList", subjectList);
 
-			List courseList = courseModel.list();
-			request.setAttribute("courseList", courseList);
+            List courseList = courseModel.list();
+            request.setAttribute("courseList", courseList);
 
-		} catch (ApplicationException e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	protected boolean validate(HttpServletRequest request) {
+    /**
+     * Validates Timetable form fields.
+     *
+     * @param request HTTP request object
+     * @return true if validation passes, otherwise false
+     */
+    @Override
+    protected boolean validate(HttpServletRequest request) {
 
-		boolean pass = true;
+        boolean pass = true;
 
-		if (DataValidator.isNull(request.getParameter("semester"))) {
-			request.setAttribute("semester", PropertyReader.getValue("error.require", "Semester"));
-			pass = false;
-		}
+        if (DataValidator.isNull(request.getParameter("semester"))) {
+            request.setAttribute("semester", PropertyReader.getValue("error.require", "Semester"));
+            pass = false;
+        }
 
-		if (DataValidator.isNull(request.getParameter("examDate"))) {
-			request.setAttribute("examDate", PropertyReader.getValue("error.require", "Date of Exam"));
-			pass = false;
-		} else if (!DataValidator.isDate(request.getParameter("examDate"))) {
-			request.setAttribute("examDate", PropertyReader.getValue("error.date", "Date of Exam"));
-			pass = false;
-		} else if (DataValidator.isSunday(request.getParameter("examDate"))) {
-			request.setAttribute("examDate", "Exam should not be on Sunday");
-			pass = false;
-		}
+        if (DataValidator.isNull(request.getParameter("examDate"))) {
+            request.setAttribute("examDate", PropertyReader.getValue("error.require", "Date of Exam"));
+            pass = false;
+        } else if (!DataValidator.isDate(request.getParameter("examDate"))) {
+            request.setAttribute("examDate", PropertyReader.getValue("error.date", "Date of Exam"));
+            pass = false;
+        } else if (DataValidator.isSunday(request.getParameter("examDate"))) {
+            request.setAttribute("examDate", "Exam should not be on Sunday");
+            pass = false;
+        }
 
-		if (DataValidator.isNull(request.getParameter("examTime"))) {
-			request.setAttribute("examTime", PropertyReader.getValue("error.require", "Exam Time"));
-			pass = false;
-		}
+        if (DataValidator.isNull(request.getParameter("examTime"))) {
+            request.setAttribute("examTime", PropertyReader.getValue("error.require", "Exam Time"));
+            pass = false;
+        }
 
-		if (DataValidator.isNull(request.getParameter("description"))) {
-			request.setAttribute("description", PropertyReader.getValue("error.require", "Description"));
-			pass = false;
-		}
+        if (DataValidator.isNull(request.getParameter("description"))) {
+            request.setAttribute("description", PropertyReader.getValue("error.require", "Description"));
+            pass = false;
+        }
 
-		if (DataValidator.isNull(request.getParameter("courseId"))) {
-			request.setAttribute("courseId", PropertyReader.getValue("error.require", "Course Name"));
-			pass = false;
-		}
+        if (DataValidator.isNull(request.getParameter("courseId"))) {
+            request.setAttribute("courseId", PropertyReader.getValue("error.require", "Course Name"));
+            pass = false;
+        }
 
-		if (DataValidator.isNull(request.getParameter("subjectId"))) {
-			request.setAttribute("subjectId", PropertyReader.getValue("error.require", "Subject Name"));
-			pass = false;
-		}
+        if (DataValidator.isNull(request.getParameter("subjectId"))) {
+            request.setAttribute("subjectId", PropertyReader.getValue("error.require", "Subject Name"));
+            pass = false;
+        }
 
-		return pass;
-	}
+        return pass;
+    }
 
-	@Override
-	protected BaseBean populateBean(HttpServletRequest request) {
+    /**
+     * Populates TimetableBean from request parameters.
+     *
+     * @param request HTTP request object
+     * @return populated TimetableBean as BaseBean
+     */
+    @Override
+    protected BaseBean populateBean(HttpServletRequest request) {
 
-		TimetableBean bean = new TimetableBean();
+        TimetableBean bean = new TimetableBean();
 
-		bean.setId(DataUtility.getLong(request.getParameter("id")));
-		bean.setSemester(DataUtility.getString(request.getParameter("semester")));
-		bean.setDescription(DataUtility.getString(request.getParameter("description")));
-		bean.setExamTime(DataUtility.getString(request.getParameter("examTime")));
-		bean.setExamDate(DataUtility.getDate(request.getParameter("examDate")));
-		bean.setCourseId(DataUtility.getLong(request.getParameter("courseId")));
-		bean.setSubjectId(DataUtility.getLong(request.getParameter("subjectId")));
+        bean.setId(DataUtility.getLong(request.getParameter("id")));
+        bean.setSemester(DataUtility.getString(request.getParameter("semester")));
+        bean.setDescription(DataUtility.getString(request.getParameter("description")));
+        bean.setExamTime(DataUtility.getString(request.getParameter("examTime")));
+        bean.setExamDate(DataUtility.getDate(request.getParameter("examDate")));
+        bean.setCourseId(DataUtility.getLong(request.getParameter("courseId")));
+        bean.setSubjectId(DataUtility.getLong(request.getParameter("subjectId")));
 
-		populateDTO(bean, request);
+        populateDTO(bean, request);
 
-		return bean;
-	}
+        return bean;
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    /**
+     * Handles GET request to show Timetable form for Add/Update.
+     *
+     * @param request  HTTP request
+     * @param response HTTP response
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		long id = DataUtility.getLong(request.getParameter("id"));
+        long id = DataUtility.getLong(request.getParameter("id"));
 
-		TimetableModel model = new TimetableModel();
+        TimetableModel model = new TimetableModel();
 
-		if (id > 0) {
-			try {
-				TimetableBean bean = model.findByPk(id);
-				ServletUtility.setBean(bean, request);
-			} catch (ApplicationException e) {
-				e.printStackTrace();
-				ServletUtility.handleException(e, request, response);
-				return;
-			}
-		}
-		ServletUtility.forward(getView(), request, response);
-	}
+        if (id > 0) {
+            try {
+                TimetableBean bean = model.findByPk(id);
+                ServletUtility.setBean(bean, request);
+            } catch (ApplicationException e) {
+                e.printStackTrace();
+                ServletUtility.handleException(e, request, response);
+                return;
+            }
+        }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+        ServletUtility.forward(getView(), request, response);
+    }
 
-		String op = DataUtility.getString(request.getParameter("operation"));
+    /**
+     * Handles POST request for Save, Update, Cancel and Reset
+     * operations for Timetable.
+     *
+     * @param request  HTTP request
+     * @param response HTTP response
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		TimetableModel model = new TimetableModel();
+        String op = DataUtility.getString(request.getParameter("operation"));
 
-		long id = DataUtility.getLong(request.getParameter("id"));
+        TimetableModel model = new TimetableModel();
 
-		if (OP_SAVE.equalsIgnoreCase(op)) {
+        long id = DataUtility.getLong(request.getParameter("id"));
 
-			TimetableBean bean = (TimetableBean) populateBean(request);
+        if (OP_SAVE.equalsIgnoreCase(op)) {
 
-			TimetableBean bean1;
-			TimetableBean bean2;
-			TimetableBean bean3;
+            TimetableBean bean = (TimetableBean) populateBean(request);
 
-			try {
-				bean1 = model.checkByCourseName(bean.getCourseId(), bean.getExamDate());
+            TimetableBean bean1;
+            TimetableBean bean2;
+            TimetableBean bean3;
 
-				bean2 = model.checkBySubjectName(bean.getCourseId(), bean.getSubjectId(), bean.getExamDate());
+            try {
+                // Check duplicate conditions
+                bean1 = model.checkByCourseName(bean.getCourseId(), bean.getExamDate());
+                bean2 = model.checkBySubjectName(bean.getCourseId(), bean.getSubjectId(), bean.getExamDate());
+                bean3 = model.checkBySemester(bean.getCourseId(), bean.getSubjectId(), bean.getSemester(),
+                        bean.getExamDate());
 
-				bean3 = model.checkBySemester(bean.getCourseId(), bean.getSubjectId(), bean.getSemester(),
-						bean.getExamDate());
+                if (bean1 == null && bean2 == null && bean3 == null) {
 
-				if (bean1 == null && bean2 == null && bean3 == null) {
-					long pk = model.add(bean);
-					ServletUtility.setBean(bean, request);
-					ServletUtility.setSuccessMessage("Timetable added successfully", request);
-				} else {
-					bean = (TimetableBean) populateBean(request);
-					ServletUtility.setBean(bean, request);
-					ServletUtility.setErrorMessage("Timetable already exist!", request);
-				}
-			} catch (DuplicateRecordException e) {
-				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("Timetable already exist!", request);
-			} catch (ApplicationException e) {
-				e.printStackTrace();
-				ServletUtility.handleException(e, request, response);
-				return;
-			}
+                    model.add(bean);
+                    ServletUtility.setBean(bean, request);
+                    ServletUtility.setSuccessMessage("Timetable added successfully", request);
 
-		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
+                } else {
 
-			TimetableBean bean = (TimetableBean) populateBean(request);
+                    bean = (TimetableBean) populateBean(request);
+                    ServletUtility.setBean(bean, request);
+                    ServletUtility.setErrorMessage("Timetable already exists!", request);
+                }
 
-			TimetableBean bean4;
+            } catch (DuplicateRecordException e) {
 
-			try {
+                ServletUtility.setBean(bean, request);
+                ServletUtility.setErrorMessage("Timetable already exists!", request);
 
-				bean4 = model.checkByExamTime(bean.getCourseId(), bean.getSubjectId(), bean.getSemester(),
-						bean.getExamDate(), bean.getExamTime(), bean.getDescription());
+            } catch (ApplicationException e) {
 
-				if (id > 0 && bean4 == null) {
-					model.update(bean);
-					ServletUtility.setBean(bean, request);
-					ServletUtility.setSuccessMessage("Timetable updated successfully", request);
-				} else {
-					bean = (TimetableBean) populateBean(request);
-					ServletUtility.setBean(bean, request);
-					ServletUtility.setErrorMessage("Timetable already exist!", request);
-				}
-			} catch (DuplicateRecordException e) {
-				ServletUtility.setBean(bean, request);
-				ServletUtility.setErrorMessage("Timetable already exist!", request);
-			} catch (ApplicationException e) {
-				e.printStackTrace();
-				ServletUtility.handleException(e, request, response);
-				return;
-			}
-		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
-			ServletUtility.redirect(ORSView.TIMETABLE_LIST_CTL, request, response);
-			return;
-		} else if (OP_RESET.equalsIgnoreCase(op)) {
-			ServletUtility.redirect(ORSView.TIMETABLE_CTL, request, response);
-			return;
-		}
-		ServletUtility.forward(getView(), request, response);
-	}
+                e.printStackTrace();
+                ServletUtility.handleException(e, request, response);
+                return;
+            }
 
-	@Override
-	protected String getView() {
-		return ORSView.TIMETABLE_VIEW;
-	}
+        } else if (OP_UPDATE.equalsIgnoreCase(op)) {
+
+            TimetableBean bean = (TimetableBean) populateBean(request);
+
+            TimetableBean bean4;
+
+            try {
+                // Check timtable clash based on exam time
+                bean4 = model.checkByExamTime(bean.getCourseId(), bean.getSubjectId(), bean.getSemester(),
+                        bean.getExamDate(), bean.getExamTime(), bean.getDescription());
+
+                if (id > 0 && bean4 == null) {
+
+                    model.update(bean);
+                    ServletUtility.setBean(bean, request);
+                    ServletUtility.setSuccessMessage("Timetable updated successfully", request);
+
+                } else {
+
+                    bean = (TimetableBean) populateBean(request);
+                    ServletUtility.setBean(bean, request);
+                    ServletUtility.setErrorMessage("Timetable already exists!", request);
+                }
+
+            } catch (DuplicateRecordException e) {
+
+                ServletUtility.setBean(bean, request);
+                ServletUtility.setErrorMessage("Timetable already exists!", request);
+
+            } catch (ApplicationException e) {
+
+                e.printStackTrace();
+                ServletUtility.handleException(e, request, response);
+                return;
+            }
+
+        } else if (OP_CANCEL.equalsIgnoreCase(op)) {
+
+            ServletUtility.redirect(ORSView.TIMETABLE_LIST_CTL, request, response);
+            return;
+
+        } else if (OP_RESET.equalsIgnoreCase(op)) {
+
+            ServletUtility.redirect(ORSView.TIMETABLE_CTL, request, response);
+            return;
+        }
+
+        ServletUtility.forward(getView(), request, response);
+    }
+
+    /**
+     * Returns Timetable view JSP path.
+     *
+     * @return Timetable view page constant
+     */
+    @Override
+    protected String getView() {
+        return ORSView.TIMETABLE_VIEW;
+    }
 }

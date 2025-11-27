@@ -108,6 +108,7 @@ public class UserModel {
             pstmt.close();
 
         } catch (Exception e) {
+        	
             e.printStackTrace();
 
             try {

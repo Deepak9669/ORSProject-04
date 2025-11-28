@@ -80,7 +80,7 @@
 	<a href="<%=ORSView.TIMETABLE_LIST_CTL %>"><b>Timetable List</b></a>
 	<b>|</b>
 <b>|</b>
-	<a href="doc/index.html" target="blank"><b>Java Doc</b></a>
+	<a href=<%=ORSView.JAVA_DOC%> target="blank"><b>Java Doc</b></a>
 	<b>|</b>
 	<a href="<%=ORSView.LOGIN_CTL %>?operation<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
 	<%

@@ -20,21 +20,21 @@ public class TestCollegeModel {
 
 	public static void main(String[] args)  {
 
-		testAdd();
+//		testAdd();
 //		testUpdate();
 //		testDelete();
 //		testFindByPk();
 //		testFindByName();
-//		testSearch();
+		testSearch();
 
-		CollegeModel model = new CollegeModel();
-
-		try {
-			System.out.println(model.nextPk());
-		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		CollegeModel model = new CollegeModel();
+//
+//		try {
+//			System.out.println(model.nextPk());
+//		} catch (DatabaseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	public static void testAdd() {
@@ -180,8 +180,8 @@ public class TestCollegeModel {
 
 				System.out.println(bean.getId());
 				System.out.println(bean.getCity());
-			//	System.out.println(bean.getName());
-//				System.out.println(bean.getAddress());
+				System.out.println(bean.getName());
+				System.out.println(bean.getAddress());
 			}
 
 		} catch (Exception e) {

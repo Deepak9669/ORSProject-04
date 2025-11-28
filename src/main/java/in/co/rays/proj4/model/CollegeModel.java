@@ -357,6 +357,7 @@ public class CollegeModel {
             rs.close();
             pstmt.close();
         } catch (Exception e) {
+        	e.printStackTrace();
             throw new ApplicationException("Exception : Exception in search college");
         } finally {
             JDBCDataSource.closeConnection(conn);

@@ -87,5 +87,8 @@ public interface ORSView {
 
 	public String ERROR_VIEW = PAGE_FOLDER + "/ErrorView.jsp";
 	public String ERROR_CTL = APP_CONTEXT + "/ErrorCtl";
+	
+	public String JAVA_DOC = "/ORSProject-04/doc/index.html";
+	
 
 }

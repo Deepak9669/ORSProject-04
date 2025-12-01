@@ -21,6 +21,10 @@
 
 </head>
 <body>
+<img src="<%=request.getContextPath()%>/img/customLogo.jpg"
+     width="100" style="float:right;">
+
+
 	<%
 		UserBean user = (UserBean) session.getAttribute("user");
 	%>
@@ -83,6 +87,8 @@
 	<a href=<%=ORSView.JAVA_DOC%> target="blank"><b>Java Doc</b></a>
 	<b>|</b>
 	<a href="<%=ORSView.LOGIN_CTL %>?operation<%=LoginCtl.OP_LOG_OUT%>"><b>Logout</b></a>
+	<b>|</b>
+	<a href="<%=ORSView.USER1_CTL %>"><b>Add User1</b></a>
 	<%
 		} else {
 	%>

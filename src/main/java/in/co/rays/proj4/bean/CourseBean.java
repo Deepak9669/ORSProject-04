@@ -6,7 +6,7 @@ package in.co.rays.proj4.bean;
  * It contains basic details of a course like name, duration and description.
  * It also supports dropdown list functionality using key-value mapping.
  * 
- * @author Deepak
+ * @author Deepak Verma
  * @version 1.0
  */
 public class CourseBean extends BaseBean {

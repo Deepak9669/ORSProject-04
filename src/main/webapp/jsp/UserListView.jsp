@@ -1,3 +1,4 @@
+
 <%@page import="in.co.rays.proj4.bean.RoleBean"%>
 <%@page import="in.co.rays.proj4.controller.ORSView"%>
 <%@page import="in.co.rays.proj4.util.HTMLUtility"%>
@@ -92,7 +93,7 @@
 
                 <tr>
                     <td style="text-align: center;">
-                        <input type="checkbox"  class="case"  value="<%=bean.getId()%>"
+                        <input type="checkbox" class="case" name="ids" value="<%=bean.getId()%>"
                             <%= (user.getId() == bean.getId() || bean.getRoleId() == RoleBean.ADMIN) ? "disabled" : "" %>>
                     </td>
                     <td style="text-align: center;"><%=index++%></td>
@@ -148,5 +149,6 @@
             %>
         </form>
     </div>
+    <%@ include  file="Footer.jsp" %>
 </body>
 </html>

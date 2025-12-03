@@ -1,106 +1,61 @@
-# ========================================
-# Java + Eclipse + Maven/Gradle .gitignore
-# ========================================
+# Eclipse project files
+.classpath
+.project
+.settings/
+.metadata/
 
-# --- Java compiled files ---
+# Docker MySQL volume
+mysql-data/
+
+# Build output directories
+/bin/
+target/
+out/
+
+# Java compiled files
 *.class
+hs_err_pid*
+*.log
+*.tmp
+
+# Packages
 *.jar
 *.war
 *.ear
-*.zip
-*.tar.gz
-*.rar
 
-# --- Log files ---
-*.log
+# IDE configs
+.vscode/
+.idea/
+*.iml
 
-# --- BlueJ files ---
-*.ctxt
+# Maven wrapper
+.mvn/
+!.mvn/wrapper/maven-wrapper.jar
 
-# --- Mobile Tools for Java (J2ME) ---
-.mtj.tmp/
+# Tomcat / Server generated files
+**/work/*
+**/logs/*
+**/.deployment/*
 
-# --- Package Files ---
-*.exe
-*.dll
-*.so
-*.dmg
-*.pkg
-*.deb
+# JSP compiled temp files
+**/org/apache/jsp/*
+**/*.jsp_classes/
 
-# --- IDE specific: Eclipse ---
-.metadata/
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-.project
-.classpath
-.recommenders/
-
-# Eclipse Core
-.DS_Store
-Thumbs.db
-
-# --- Eclipse Working Sets / Tasks ---
-.task-tags
-.project
-.settings/
-.buildpath
-
-# --- Maven ---
-target/
+# Maven metadata backups
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
-!/.mvn/wrapper/maven-wrapper.properties
 
-# --- Gradle ---
-.gradle/
-build/
-!gradle/wrapper/gradle-wrapper.jar
-gradle-app.setting
-.gradle/
-out/
-
-# --- STS (Spring Tool Suite) ---
-.apt_generated/
-.springBeans/
-.sts4-cache/
-
-# --- IntelliJ IDEA (optional, if you open in IntelliJ) ---
-*.iml
-.idea/
-out/
-
-# --- NetBeans (optional, if opened there) ---
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-
-# --- VS Code ---
-.vscode/
-
-# --- Other OS generated files ---
+# System files
 .DS_Store
 Thumbs.db
-ehthumbs.db
-Desktop.ini
 
-# --- Java specific ---
-hs_err_pid*
-replay_pid*
+# Swap / temp
+*.swp
+*.swo
+*.bak
+
+# Docker env files
+docker-compose.override.yml
+.env

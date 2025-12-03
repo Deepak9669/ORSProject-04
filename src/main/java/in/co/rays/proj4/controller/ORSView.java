@@ -41,7 +41,7 @@ public interface ORSView {
 	public String ROLE_CTL = APP_CONTEXT + "/ctl/RoleCtl";
 
 	public String ROLE_LIST_VIEW = PAGE_FOLDER + "/RoleListView.jsp";
-	public String ROLE_LIST_CTL = APP_CONTEXT + "/RoleListCtl";
+	public String ROLE_LIST_CTL = APP_CONTEXT + "/ctl/RoleListCtl";
 
 	public String COLLEGE_VIEW = PAGE_FOLDER + "/CollegeView.jsp";
 	public String COLLEGE_CTL = APP_CONTEXT + "/ctl/CollegeCtl";
@@ -87,8 +87,13 @@ public interface ORSView {
 
 	public String ERROR_VIEW = PAGE_FOLDER + "/ErrorView.jsp";
 	public String ERROR_CTL = APP_CONTEXT + "/ErrorCtl";
-	
+
 	public String JAVA_DOC = "/ORSProject-04/doc/index.html";
-	
+
+	public String USER1_VIEW = PAGE_FOLDER + "/User1View.jsp";
+	public String USER1_CTL = APP_CONTEXT + "/User1Ctl";
+
+	public String USER1_LIST_VIEW = PAGE_FOLDER + "/User1ListView.jsp";
+	public String USER1_LIST_CTL = PAGE_FOLDER + "/User1ListCtl";
 
 }

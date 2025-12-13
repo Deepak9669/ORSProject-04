@@ -19,8 +19,8 @@ import in.co.rays.proj4.util.ServletUtility;
 /**
  * MarksheetListCtl Controller used to manage Marksheet List page.
  * 
- * It supports searching, pagination, deletion and navigation 
- * to Marksheet add page.
+ * It supports searching, pagination, deletion and navigation to Marksheet add
+ * page.
  * 
  * @author Deepak Verma
  * @version 1.0
@@ -48,7 +48,7 @@ public class MarksheetListCtl extends BaseCtl {
 	/**
 	 * Handles GET request for first time loading Marksheet List page.
 	 * 
-	 * @param request HTTP request
+	 * @param request  HTTP request
 	 * @param response HTTP response
 	 */
 	@Override
@@ -71,10 +71,8 @@ public class MarksheetListCtl extends BaseCtl {
 			}
 
 			ServletUtility.setList(list, request);
-			
 			ServletUtility.setPageNo(pageNo, request);
 			ServletUtility.setPageSize(pageSize, request);
-			
 			ServletUtility.setBean(bean, request);
 			request.setAttribute("nextListSize", next.size());
 
@@ -87,9 +85,10 @@ public class MarksheetListCtl extends BaseCtl {
 	}
 
 	/**
-	 * Handles POST request for search, pagination, delete, reset and back operations.
+	 * Handles POST request for search, pagination, delete, reset and back
+	 * operations.
 	 * 
-	 * @param request HTTP request
+	 * @param request  HTTP request
 	 * @param response HTTP response
 	 */
 	@Override
@@ -103,9 +102,7 @@ public class MarksheetListCtl extends BaseCtl {
 		int pageSize = DataUtility.getInt(request.getParameter("pageSize"));
 
 		pageNo = (pageNo == 0) ? 1 : pageNo;
-		pageSize = (pageSize == 0) 
-				? DataUtility.getInt(PropertyReader.getValue("page.size")) 
-				: pageSize;
+		pageSize = (pageSize == 0) ? DataUtility.getInt(PropertyReader.getValue("page.size")) : pageSize;
 
 		MarksheetBean bean = (MarksheetBean) populateBean(request);
 		MarksheetModel model = new MarksheetModel();
@@ -173,7 +170,7 @@ public class MarksheetListCtl extends BaseCtl {
 			ServletUtility.setPageNo(pageNo, request);
 			ServletUtility.setPageSize(pageSize, request);
 			ServletUtility.setBean(bean, request);
-			
+
 			request.setAttribute("nextListSize", next.size());
 
 			ServletUtility.forward(getView(), request, response);

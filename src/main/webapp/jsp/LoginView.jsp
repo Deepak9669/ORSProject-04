@@ -38,21 +38,13 @@
 			<table>
 				<tr>
 					<th>Login ID:</th>
-<<<<<<< HEAD
 					<td><input type="text" name="login" placeholder="Enter your Login Id"
-=======
-					<td><input type="text" name="login"
->>>>>>> 46e2c92a4942fedc2ef46f7ed2ac9209a96037b5
 						value="<%=DataUtility.getStringData(bean.getLogin())%>"></td>
 					<td style="position: fixed;"><font color="red"> <%=ServletUtility.getErrorMessage("login", request)%></font></td>
 				</tr>
 				<tr>
 					<th>Password:</th>
-<<<<<<< HEAD
 					<td><input type="text" name="password" placeholder="Enter youer password"
-=======
-					<td><input type="text" name="password"
->>>>>>> 46e2c92a4942fedc2ef46f7ed2ac9209a96037b5
 						value="<%=DataUtility.getStringData(bean.getPassword())%>"></td>
 					<td style="position: fixed;"><font color="red"> <%=ServletUtility.getErrorMessage("password", request)%></font></td>
 				</tr>
@@ -71,7 +63,7 @@
 					<td><a href="<%=ORSView.FORGET_PASSWORD_CTL%>"><b>Forget my password?</b></a>&nbsp;</td>
 				</tr>
 			</table>
-			<input type="text" name="uri" value="<%=request.getAttribute("uri")%>">
+			<input type="hidden" name="uri" value="<%=request.getAttribute("uri")%>">
 		</div>
 	</form>
 </body>
